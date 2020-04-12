@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {Form, Input, Button} from 'antd'
 import { useAlert } from 'react-alert'
 
@@ -9,7 +9,7 @@ const Addidea = (props) =>{
     return(
         <div className='formholder'>
         <h2>Add an Idea</h2>
-            <Form onFinish={onFinish}>
+            <Form onFinish={onFinish} name="IdeaForm">
                 <h2>Title</h2>
                 <Form.Item name='title' rules={[{ required: true, message: 'You can not leave this epmty!' }]}>
                     <Input placeholder='Describe your idea in a short and concise manner.'/>
