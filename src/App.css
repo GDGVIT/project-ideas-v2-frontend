@@ -1,0 +1,165 @@
+body{
+    /* height: 100vh; */
+    font-family: Montserrat;
+    background-color: #EEEEEE;
+  }
+  
+  .App{
+    background-color: #EEEEEE;
+  }
+  .navs{
+      float: left;
+  }
+  .navz img{
+    width: 125px;
+    height: auto;
+  }
+
+  .ant-menu{
+    box-shadow: 0px 4px 8px #00000029;
+  }
+
+  .ant-menu-item-selected a{
+    color: black !important;
+  }
+  .ant-menu-item-active a{
+    color: black !important;
+  }
+
+  .profile{
+      cursor: pointer;
+      float: right;
+      text-align: center;
+  }
+  .profile p{
+    margin-bottom: 0px;
+  }
+  .l p{
+    color: #2785FC;
+  }
+
+/* Ideas page css */
+.main{
+  margin-top: 60px;
+}
+  .countryCss{
+    text-align: center;
+    margin-bottom: 40px;
+    width: 90%;
+    max-width: 700px;
+    margin: auto;
+  }
+  .countryCss .ant-select{
+      width: 80%;
+      margin: auto auto;
+      box-shadow: 0px 2px 3px lightgray;
+      border: none;
+      border-radius: 14px;
+      height: 74px;
+  }
+  .countryCss .ant-select .ant-select-selector{
+      border-radius: 14px;
+      height: 100%;
+      border: none;
+  }
+  .ant-select-selection-placeholder, .ant-select-selection-item{
+      padding-top: 21px !important;
+      color: #000000;
+      text-align: left;
+      font-size: 20px;
+  }
+  .ant-select-selection-search-input{
+      height: 100% !important;
+  }
+  .ant-select-dropdown{
+    border-radius: 14px;
+  }
+  
+  /* cards css */
+  .IdeaCards{
+    margin-top: 40px;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 40px;
+  }
+  .vote>*{
+    display: block;
+    margin: 5px 0px;
+  }
+  .vote{
+    text-align: center;
+   margin-top: 15.5px;
+   padding-left: 0px !important;
+  }
+  .vote>span{
+    cursor: pointer;
+  }
+  .ant-card{
+    box-shadow: 0px 2px 3px lightgray;
+    border: none;
+    border-radius: 14px;
+    margin-bottom: 30px;
+  }
+  .commentAdd{
+    font-weight: bold;
+  }
+  .card-cont>div>h2{
+    color: #2785FC;
+    font-weight: 600;
+  }
+ hr{
+   width: 91.76%;
+   margin: auto auto;
+   color: gray;
+   box-shadow: 0px 0px 3px lightgray ;
+ }
+ .ant-input-affix-wrapper{
+   border: none;
+   padding: 4px 4px;
+ }
+ .ant-input-affix-wrapper .ant-input::placeholder{
+  font-weight: bold;
+}
+.mainReply{
+  margin-top: 20px;
+}
+.subReply{
+  margin: 20px 20px !important;
+}
+
+/* form css */
+.formholder{
+  width: 95%;
+  max-width: 700px;
+  margin: auto auto
+}
+.formholder h2{
+  color: #2785FC;
+  font-weight: 600;
+  margin-top: 20px;
+}
+.formholder>h2{
+  text-align: center;
+  margin-bottom: 50px;
+}
+.formholder .ant-input{
+  border-radius: 10px;
+  border: 2px solid #2785FC;
+}
+.formholder .ant-btn{
+  border-radius: 10px;
+  border: 2px solid #2785FC;
+  width: 332px;
+  height: 74px;
+margin: auto auto;
+}
+@media(max-width:768px){
+.formholder .ant-btn{
+  width: 150px;
+  height: 50px;
+}
+}
+.formholder .ant-form-item-control-input-content{
+  text-align: center;
+}
