@@ -78,7 +78,17 @@ class Sideas extends Component{
         }),
         body:JSON.stringify(votebody)
       })
-      .then(res=>res.json())
+      .then(res=>{
+        if(res.status===200 || res.status===201 ||res.status===202||res.status===203||res.status===204){
+          cardsVoted.votes += vote 
+          this.setState({
+            idea: cardsVoted
+          })
+          return(res.json())
+        }else{
+          return(res.json())
+        }
+      })
       .then(data=>{
         this.props.alert.show(data.message)
       })
