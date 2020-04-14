@@ -7,6 +7,9 @@ body{
   .App{
     background-color: #EEEEEE;
   }
+  p{
+    margin-bottom: 0.4em;
+  }
   .navs{
       float: left;
   }
@@ -49,7 +52,7 @@ body{
     max-width: 700px;
     margin: auto;
   }
-  .countryCss .ant-select{
+  .countryCss .ant-input{
       width: 80%;
       margin: auto auto;
       box-shadow: 0px 2px 3px lightgray;
@@ -57,7 +60,7 @@ body{
       border-radius: 14px;
       height: 74px;
   }
-  .countryCss .ant-select .ant-select-selector{
+  /* .countryCss .ant-select .ant-select-selector{
       border-radius: 14px;
       height: 100%;
       border: none;
@@ -73,7 +76,7 @@ body{
   }
   .ant-select-dropdown{
     border-radius: 14px;
-  }
+  } */
   
   /* cards css */
   .IdeaCards{
@@ -89,7 +92,7 @@ body{
   }
   .vote{
     text-align: center;
-   margin-top: 15.5px;
+   margin-top: 4px;
    padding-left: 0px !important;
   }
   .vote>span{
@@ -103,6 +106,9 @@ body{
   }
   .commentAdd{
     font-weight: bold;
+  }
+  .sideaOpener{
+    cursor: pointer;
   }
   .card-cont>div>h2{
     color: #2785FC;
@@ -162,4 +168,16 @@ margin: auto auto;
 }
 .formholder .ant-form-item-control-input-content{
   text-align: center;
+}
+
+/* react alert css */
+#__react-alert__>div>div>div{
+  background-color: #ffffff !important;
+  border-radius: 14px !important;
+  border: none;
+  box-shadow: 0px 0px 5px lightgray !important;
+  color: #000000 !important;
+}
+.sikebich>.ant-form-item{
+  margin-bottom: 0px;
 }
