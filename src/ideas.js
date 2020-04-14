@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import {Select, Card, Row, Col, Input} from 'antd'
+import { Card, Row, Col, Input} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 
 
-const { Option } = Select;
+// const { Option } = Select;
 
 class Ideas extends Component{
     constructor(props) {

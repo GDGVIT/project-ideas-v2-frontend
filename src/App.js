@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import './App.css';
-import {BrowserRouter, Route, withRouter, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import Home from './home'
