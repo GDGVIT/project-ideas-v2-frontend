@@ -70,6 +70,9 @@ class Nav extends Component{
                     if(data){
                         localStorage.setItem("token", data.User.token)
                         localStorage.setItem("user", user.displayName)
+                        this.setState({
+                            isLoggedIn:true
+                        })
                     }
                 })
                 .catch(error=>console.error(error))
@@ -78,13 +81,13 @@ class Nav extends Component{
             // The signed-in user info.
           }).catch(function(error) {
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+            // var errorCode = error.code;
+            // var errorMessage = error.message;
             console.log(error)
             // The email of the user's account used.
-            var email = error.email;
+            // var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
+            // var credential = error.credential;
             // ...
           });
 
