@@ -3,9 +3,11 @@ import {Menu, Drawer, Dropdown} from 'antd'
 import {NavLink, withRouter} from 'react-router-dom'
 import dsc from './assets/dsclogo.png';
 import Addidea from './addIdea';
+import Load from './loader'
 import firebase from "firebase/app";
 import 'firebase/auth';
 import { ReCaptcha } from 'react-recaptcha-v3';
+import glogo from './assets/glogo.png'
 
 
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -21,6 +23,7 @@ class Nav extends Component{
             current: props.active,
             isLoggedIn: false,
             visible: false,
+            loading: false
         }
     }
     
@@ -30,6 +33,7 @@ class Nav extends Component{
         recaptok = recaptchaToken;
     }
     componentDidMount(){
+
         if(this.props.location.pathname === '/'){
             this.setState({
                 current: 'home'
@@ -40,9 +44,20 @@ class Nav extends Component{
             })
         }
 
+        if(localStorage.getItem('token')){
+            this.setState({
+                isLoggedIn:true
+            })
+        }
 
-        firebase.auth().getRedirectResult().then(function(result) {
+        firebase.auth().getRedirectResult().then((result)=> {
+
             if (result.credential) {
+
+                this.setState({
+                    loading:true
+                })
+    
               // This gives you a Google Access Token. You can use it to access the Google API.
                 var token = result.credential.accessToken;
                 console.log(token)
@@ -68,16 +83,18 @@ class Nav extends Component{
                 .then(data =>{
                     console.log(data)
                     if(data){
-                        localStorage.setItem("token", data.User.token)
+                        localStorage.setItem("token", 'Token '+data.User.token)
                         localStorage.setItem("user", user.displayName)
                         this.setState({
-                            isLoggedIn:true
+                            isLoggedIn:true,
+                            loading: false
                         })
                     }
                 })
                 .catch(error=>console.error(error))
             // ...
             }
+
             // The signed-in user info.
           }).catch(function(error) {
             // Handle Errors here.
@@ -112,10 +129,8 @@ class Nav extends Component{
                 }),
         }).then(response => response.json())
         .then(data=>{
-            alert.show(data.message)
             localStorage.removeItem("token");
-
-            this.props.history.push("/");
+            this.setState({isLoggedIn:false})
         })
         .catch(error=>{
             console.error(error);
@@ -147,16 +162,17 @@ class Nav extends Component{
         </Menu>
       );
     render(){
+        const {loading} = this.state
         var {isLoggedIn} = this.state
         var prolog = isLoggedIn?(
-            <Menu.Item className="profile l" onClick={this.logout} key="Profile">
+            <Menu.Item className="profile l" key="Profile">
                 <Dropdown overlay={this.lmenu}>
                     <p>Hey, {localStorage.getItem("user")}</p>
                 </Dropdown>
             </Menu.Item>
         ):(
             <Menu.Item className="profile l" onClick={this.logIn} key="Profile">
-                <p>Login</p>
+                <p>Login <img src={glogo} alt="Google logo" /></p>
             </Menu.Item>
         );
         return(
@@ -167,6 +183,7 @@ class Nav extends Component{
             action='/'
             verifyCallback={this.verifyCallback}
             />
+            {loading && <Load />}
                 <Menu onClick={this.handleClick} selectedKeys={this.state.current} mode="horizontal">
                     <Menu.Item key="dsc" className="navz">
                         <img src={dsc} alt="dsc-vit home"></img>

@@ -3,6 +3,7 @@ import {withAlert} from 'react-alert'
 import Nav from './nav'
 import { Card, Row, Col, Input} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
+import Load2 from './loading2'
 
 
 // const { Option } = Select;
@@ -12,7 +13,8 @@ class Ideas extends Component{
         super(props);
         this.state={
           isLoggedIn: false,
-          cards: []
+          cards: [],
+          loading: false
         }
     }
 
@@ -37,6 +39,9 @@ class Ideas extends Component{
   }
 
   componentDidMount() {
+    this.setState({
+      loading:true
+    })
     fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/', {
       method:'GET'
     })
@@ -46,16 +51,15 @@ class Ideas extends Component{
       this.setState({
         cards:data.message
       })
+      this.setState({
+        loading:false
+      })
     })
   }
   
   addVote=(vote, id, index)=>{
 
     let cardsVoted = this.state.cards;
-    cardsVoted[index].votes += vote 
-    this.setState({
-      cards: cardsVoted
-    })
     console.log('otherstuff',vote, id, index)
    let votebody = {
       'idea_id':id,
@@ -69,9 +73,21 @@ class Ideas extends Component{
       }),
       body:JSON.stringify(votebody)
     })
-    .then(res=>res.json())
+    .then(res=>{
+      if(res.status===200 || res.status===201 ||res.status===202||res.status===203||res.status===204){
+        cardsVoted[index].votes += vote 
+        this.setState({
+          cards: cardsVoted
+        })
+        return(res.json())
+      }else{
+        return(res.json())
+      }
+    })
     .then(data=>{
-      this.props.alert.show(data.message)
+      if(data.message){
+        this.props.alert.show(data.message)
+      }
     })
     // this.setState({
       
@@ -82,12 +98,13 @@ class Ideas extends Component{
   }
 
     render(){
+      const {loading} = this.state
       var {cards} = this.state;
       let ideaz = cards.map((data, index)=>{
          console.log(index)
         let theDate = data.date_time.substring(0,10);
         return(
-          <Card key={data.id}>
+          <Card key={data.id} data-aos='fade-up'>
           <Row gutter={16}>
             <Col span={1} className="vote">
               <CaretUpFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(1, data.id, index)}} />
@@ -112,6 +129,7 @@ class Ideas extends Component{
             <Input placeholder="Search for ideas" onChange={this.onChange}/>
           </div>
           <div className="IdeaCards">
+          {loading && <Load2 />}
             {ideaz}
           </div>
         </div>
