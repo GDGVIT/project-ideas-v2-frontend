@@ -1,9 +1,8 @@
 import React from 'react'
 import {Form, Input, Button} from 'antd'
-import { useAlert } from 'react-alert'
+import { withAlert } from 'react-alert'
 
 const Addidea = (props) =>{
-    const {alert} = useAlert()
 
     const onFinish =(values)=>{
         console.log(values)
@@ -12,12 +11,13 @@ const Addidea = (props) =>{
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token')
-            })
+            }),
+            body:JSON.stringify(values)
         })
         .then(res=>res.json())
         .then(data=>{
             console.log(data)
-            alert.show(data.message)
+            props.alert.show(data.message)
         })
         .catch(error=>console.error(error))
     }
@@ -41,4 +41,4 @@ const Addidea = (props) =>{
     )
 }
 
-export default Addidea
+export default withAlert()(Addidea);

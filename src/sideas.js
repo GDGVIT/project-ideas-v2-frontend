@@ -78,7 +78,17 @@ class Sideas extends Component{
         }),
         body:JSON.stringify(votebody)
       })
-      .then(res=>res.json())
+      .then(res=>{
+        if(res.status===200 || res.status===201 ||res.status===202||res.status===203||res.status===204){
+          cardsVoted.votes += vote 
+          this.setState({
+            idea: cardsVoted
+          })
+          return(res.json())
+        }else{
+          return(res.json())
+        }
+      })
       .then(data=>{
         this.props.alert.show(data.message)
       })
@@ -92,6 +102,7 @@ addComment=(id, e, pid)=>{
     'body':e.body,
     'parent_comment_id':pid
   }
+  console.log(pid, votebody)
   fetch(process.env.REACT_APP_BASEURL+'app/comment/',{
     method:'POST',
     headers: new Headers({
@@ -133,11 +144,11 @@ addComment=(id, e, pid)=>{
               <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'lightgray'}}>{theDate}</span></div>
               <div><h3>{data.body}</h3></div>
               <div> 
-              <Form className="sikebich" onFinish={(val)=>{this.addComment(data.id, val, data.parent_comment_id)}}>
+              <Form className="sikebich" onFinish={(val)=>{this.addComment(data.idea_id, val, data.id)}}>
                     <Form.Item
                       name="body"
                     >
-                      <Input placeholder="Add a comment" prefix={<MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />} /> 
+                      <Input placeholder="reply..." prefix={<MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />} /> 
                     </Form.Item>
                   </Form>
                </div>
