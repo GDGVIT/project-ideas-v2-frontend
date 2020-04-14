@@ -11,6 +11,8 @@ import Sidea from './sideas'
 import firebase from "firebase/app";
 import firebaseConfig from './firebase.config';
 import { loadReCaptcha } from 'react-recaptcha-v3'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -32,6 +34,7 @@ class App extends Component{
   }
   componentDidMount() {
     loadReCaptcha("6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz");
+    AOS.init()
   }
   
   render(){

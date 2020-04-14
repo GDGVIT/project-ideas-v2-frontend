@@ -10,6 +10,56 @@ body{
   p{
     margin-bottom: 0.4em;
   }
+/* home */
+  .home{
+    width: 80%;
+    margin: auto auto;
+    margin-top: 60px ;
+  }
+  .homeHeading{
+    width: 60%;
+  }
+  .homeHeading>h1{
+    font-size: 4rem;
+  }
+  .homeHeading>p{
+    text-align: right;
+  }
+  .homeCard{
+    width: 50%;
+    height: 300px;
+    margin: auto auto;
+  }
+  .home .ideaCards{
+    margin-top: 60px;
+  }
+  .ideaCards>.ant-col{
+      margin-bottom: 60px ;
+  }
+
+  @media(max-width:992px){
+    .homeHeading{
+      width: 100%;
+    }
+    .homeCard{
+      width: 80%;
+    }
+  }
+  @media(max-width: 768px){
+    .homeHeading>h1{
+      font-size: 3rem;
+    }
+    .homeCard{
+      width: 95%;
+    }
+  }
+  @media(max-width: 400px){
+    .homeHeading>h1{
+      font-size: 2rem;
+    }
+
+  }
+  /* nav */
   .navs{
       float: left;
   }
@@ -39,6 +89,11 @@ body{
   }
   .l p{
     color: #2785FC;
+  }
+  .l>p>img{
+    width: 17px;
+    height: auto;
+    margin-bottom: 2px;
   }
 
 /* Ideas page css */
@@ -180,4 +235,38 @@ margin: auto auto;
 }
 .sikebich>.ant-form-item{
   margin-bottom: 0px;
+}
+
+.loadingIcon{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(175,175,175, 0.6);
+
+  text-align: center;
+  z-index: 2000;
+}
+.loadingIcon>*{
+  z-index: 2001;
+  height: 100%;
+}
+.loadingIcon>div>svg{
+  position: fixed;
+  top:50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+}
+.loadingIcon2>div{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+}
+.loadingIcon2>div>svg{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
 }
