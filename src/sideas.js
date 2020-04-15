@@ -61,10 +61,7 @@ class Sideas extends Component{
     addVote=(vote, id)=>{
 
       let cardsVoted = this.state.idea;
-      cardsVoted.votes += vote 
-      this.setState({
-        idea: cardsVoted
-      })
+
       console.log('otherstuff',vote, id)
      let votebody = {
         'idea_id':id,
@@ -92,6 +89,7 @@ class Sideas extends Component{
       .then(data=>{
         this.props.alert.show(data.message)
       })
+      .catch(error=>console.error(error))
       // this.setState({
         
       // })
@@ -113,8 +111,12 @@ addComment=(id, e, pid)=>{
   })
   .then(res=>res.json())
   .then(data=>{
-    this.props.alert.show(data.message)
+    console.log(data)
+    window.location.reload()
+  // this.state.comment
+    // this.props.alert.show(data.message)
   })
+  .catch(error=>console.error(error))
 }
   
     render(){
@@ -148,7 +150,7 @@ addComment=(id, e, pid)=>{
                     <Form.Item
                       name="body"
                     >
-                      <Input placeholder="reply..." prefix={<MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />} /> 
+                      <Input placeholder="Reply..." prefix={<MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />} /> 
                     </Form.Item>
                   </Form>
                </div>

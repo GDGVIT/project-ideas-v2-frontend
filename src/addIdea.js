@@ -14,10 +14,14 @@ const Addidea = (props) =>{
             }),
             body:JSON.stringify(values)
         })
-        .then(res=>res.json())
+        .then(res=>{
+            if(res.status === 200){
+                props.alert.show("Idea submitted")
+            }    
+            return(res.json())
+        })
         .then(data=>{
             console.log(data)
-            props.alert.show(data.message)
         })
         .catch(error=>console.error(error))
     }
@@ -32,6 +36,10 @@ const Addidea = (props) =>{
                 <h2>Description</h2>
                 <Form.Item name='project_description' rules={[{ required: true, message: 'Please can not leave this empty!' }]}>
                     <Input.TextArea rows={4} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
+                </Form.Item>
+                <h2>Tags</h2>
+                <Form.Item name='tags' rules={[{ required: true, message: 'You can not leave this epmty!' }]}>
+                    <Input placeholder='The category of idea, separated by a comma (if multiple).'/>
                 </Form.Item>
                 <Form.Item>
                     <Button type='primary' htmlType='submit'>Submit</Button>
