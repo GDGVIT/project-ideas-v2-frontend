@@ -89,6 +89,7 @@ class Ideas extends Component{
         this.props.alert.show(data.message)
       }
     })
+    .catch(error=>console.error(error))
     // this.setState({
       
     // })

@@ -271,3 +271,22 @@ margin: auto auto;
   margin-left: -50px;
   margin-top: -50px;
 }
+
+/* admin panel css */
+.adminlogin{
+  width: 60%;
+  margin: auto auto;
+  margin-top: 50px;
+}
+.admin{
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+.admin>button{
+  width: 100px;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px lightgray;
+}
