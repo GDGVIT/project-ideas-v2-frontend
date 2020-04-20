@@ -13,7 +13,8 @@ class Sideas extends Component{
           isLoggedIn: false,
           idea: [],
           comment:[],
-          total:1
+          total:1,
+          al:true
         }
     }
   
@@ -89,7 +90,19 @@ class Sideas extends Component{
         }
       })
       .then(data=>{
-        this.props.alert.show(data.message)
+        if(data.message){
+          if(this.state.al){
+          this.props.alert.show(data.message)
+          this.setState({
+            al:false
+          })
+            setTimeout(()=>{
+              this.setState({
+                al:true
+              })
+            },5000)
+          }
+        }
       })
       .catch(error=>console.error(error))
       // this.setState({

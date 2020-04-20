@@ -18,7 +18,8 @@ class Ideas extends Component{
           mssg:'',
           total:1,
           current:1,
-          search:null
+          search:null,
+          al:true
         }
     }
 
@@ -106,7 +107,17 @@ class Ideas extends Component{
     })
     .then(data=>{
       if(data.message){
+        if(this.state.al){
         this.props.alert.show(data.message)
+        this.setState({
+          al:false
+        })
+          setTimeout(()=>{
+            this.setState({
+              al:true
+            })
+          },5000)
+        }
       }
     })
     .catch(error=>console.error(error))
