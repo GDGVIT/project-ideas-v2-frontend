@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input} from 'antd'
+import { Card, Row, Col, Input, Pagination} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
@@ -14,7 +14,11 @@ class Ideas extends Component{
         this.state={
           isLoggedIn: false,
           cards: [],
-          loading: false
+          loading: false,
+          mssg:'',
+          total:1,
+          current:1,
+          search:null
         }
     }
 
@@ -22,16 +26,21 @@ class Ideas extends Component{
   onChange=(e)=>{
     e.persist()
     console.log(e)
-  fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+e.target.value,{
+    this.setState({
+      search: e.target.value
+    })
+  fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+e.target.value+'&offset=0',{
       method:'GET'
     })
     .then(res=>res.json())
     .then(data=>{
       if(!data){
-        this.props.alert.show("Couldn't find any such entry")
+        this.props.alert.show("Couldn't find any such Idea")
       }else{
         this.setState({
-          cards:data.message
+          cards:data.message,
+          total: data.total_pages
+        
         })
       }
     })
@@ -39,21 +48,32 @@ class Ideas extends Component{
   }
 
   componentDidMount() {
+    console.log(document.querySelector('.main').offsetHeight)
+    console.log(window.innerHeight)
     this.setState({
       loading:true
     })
-    fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/', {
+    fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
       method:'GET'
     })
     .then(res=>res.json())
     .then(data=>{
       console.log(data)
       this.setState({
-        cards:data.message
+        cards:data.message,
+        loading:false,
+        total:data.total_pages
       })
-      this.setState({
-        loading:false
-      })
+      console.log(this.state)
+    })
+    .catch(error=>{
+      if(error){
+        console.log(error)
+        this.setState({
+          mssg:"Seems like there aren't any published ideas yet :/",
+          loading:false
+        })
+      }
     })
   }
   
@@ -98,10 +118,69 @@ class Ideas extends Component{
     this.props.history.push('/ideas/'+id)
   }
 
+  changePage=(page)=>{
+    // console.log(page)
+    // this.setState({
+    //   current:page
+    // })
+    this.setState({
+      loading:true
+    })
+    if(this.state.search){
+      fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+this.state.search+'&offset='+(page-1),{
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        if(!data){
+          this.props.alert.show("Couldn't find any such Idea")
+        }else{
+          this.setState({
+            cards:data.message,
+            total: data.total_pages,
+              loading:false
+          })
+        }
+      })
+      .catch(error=>{
+        if(error){
+          console.log(error)
+          this.setState({
+            mssg:"Seems like there aren't any published ideas yet :/",
+            loading:false
+          })
+        }
+      })
+    }else{
+      fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset='+(page-1), {
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        this.setState({
+          cards:data.message
+        })
+        this.setState({
+          loading:false
+        })
+      })
+      .catch(error=>{
+        if(error){
+          console.log(error)
+          this.setState({
+            mssg:"Seems like there aren't any published ideas yet :/",
+            loading:false
+          })
+        }
+      })
+    }
+
+  }
     render(){
       const {loading} = this.state
       var {cards} = this.state;
-      let ideaz = cards.map((data, index)=>{
+      let ideaz = cards.length>0?(cards.map((data, index)=>{
          console.log(index)
         let theDate = data.date_time.substring(0,10);
         return(
@@ -113,7 +192,7 @@ class Ideas extends Component{
               <CaretDownFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(-1, data.id, index)}} />
             </Col>
             <Col span={22} className='card-cont'>
-            <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'lightgray'}}>{theDate}</span></div>
+            <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{data.project_description}</p></div>
               <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />Discuss...></p></div>
@@ -121,7 +200,7 @@ class Ideas extends Component{
           </Row>
         </Card>
         )
-      })
+      })):(<div style={{textAlign:'center'}}>{this.state.mssg}</div>);
       return(
       <div>
         <Nav active='ideas'/>
@@ -132,6 +211,10 @@ class Ideas extends Component{
           <div className="IdeaCards">
           {loading && <Load2 />}
             {ideaz}
+
+          </div>
+          <div className="paginationDiv">
+          <Pagination defaultCurrent={1} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
           </div>
         </div>
       </div>)

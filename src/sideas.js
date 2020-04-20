@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Form} from 'antd'
+import { Card, Row, Col, Input, Form, Pagination} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 
 
@@ -12,7 +12,8 @@ class Sideas extends Component{
         this.state={
           isLoggedIn: false,
           idea: [],
-          comment:[]
+          comment:[],
+          total:1
         }
     }
   
@@ -44,14 +45,15 @@ class Sideas extends Component{
         })
         .catch(error=>console.error(error))
 
-        fetch(process.env.REACT_APP_BASEURL+'app/comment/'+this.props.match.params.ideaID+'/',{
+        fetch(process.env.REACT_APP_BASEURL+'app/comment/'+this.props.match.params.ideaID+'/?offset=0',{
             method:'GET'
           })
         .then(res=>res.json())
         .then(data=>{
           console.log(data)
             this.setState({
-              comment: data.message
+              comment: data.message,
+              total:data.total_pages
             })
         })
         .catch(error=>console.error(error))
@@ -94,13 +96,13 @@ class Sideas extends Component{
         
       // })
     }
-addComment=(id, e, pid)=>{
+addComment=(id, e, pid, index)=>{
   let votebody={
     'idea_id':id,
     'body':e.body,
     'parent_comment_id':pid
   }
-  console.log(pid, votebody)
+  console.log(index)
   fetch(process.env.REACT_APP_BASEURL+'app/comment/',{
     method:'POST',
     headers: new Headers({
@@ -112,25 +114,59 @@ addComment=(id, e, pid)=>{
   .then(res=>res.json())
   .then(data=>{
     console.log(data)
-    window.location.reload()
+    console.log(this.state.comment)
+    if(index){
+      var reply = this.state.comment
+      reply[index].child_comments.push(data.message)
+      this.setState({
+        comment: reply
+      })
+    }else{
+      // var com = this.state.comment
+      // com.push(data.message)
+      // this.setState({
+      //   comment:com
+      // })
+      window.location.reload()
+    }
+    // window.location.reload()
+
   // this.state.comment
     // this.props.alert.show(data.message)
   })
   .catch(error=>console.error(error))
 }
+
+changePage=(page)=>{
+  fetch(process.env.REACT_APP_BASEURL+'app/comment/'+this.props.match.params.ideaID+'/?offset='+(page-1), {
+    method:'GET'
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    console.log(data)
+    this.setState({
+      comment:data.message
+    })
+  })
+  .catch(error=>{
+    if(error){
+      console.log(error)
+    }
+  })
+}
   
     render(){
       var {comment} = this.state;
-      var coms = comment.map(data=>{
+      var coms = comment.map((data,dataindex)=>{
         let theDate = data.date_time.substring(0,10);
-        var reps = data.child_comments.length>0?(data.child_comments.map(child=>{
+        var reps = data.child_comments.length>0?(data.child_comments.map((child)=>{
           let repDate = child.date_time.substring(0,10);
           return(
             <Row gutter={16} className="subReply" key={child.id}>
             <Col span={1} className="vote">
             </Col>
             <Col span={22} className='card-cont '>
-              <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{child.username} </span><span style={{paddingBottom:'15px', color:'lightgray'}}>{repDate}</span></div>
+              <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'900'}}>{child.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{repDate}</span></div>
               <div><h3>{child.body}</h3></div>
             </Col>
           </Row>
@@ -143,10 +179,10 @@ addComment=(id, e, pid)=>{
             <Col span={1} className="vote">
             </Col>
             <Col span={22} className='card-cont '>
-              <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'lightgray'}}>{theDate}</span></div>
+              <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'900'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h3>{data.body}</h3></div>
               <div> 
-              <Form className="sikebich" onFinish={(val)=>{this.addComment(data.idea_id, val, data.id)}}>
+              <Form className="sikebich" onFinish={(val)=>{this.addComment(data.idea_id, val, data.id, dataindex)}}>
                     <Form.Item
                       name="body"
                     >
@@ -210,6 +246,9 @@ addComment=(id, e, pid)=>{
               <hr />  
              {coms}
             </Card>
+          </div>
+          <div className="paginationDiv">
+          <Pagination defaultCurrent={1} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
           </div>
         </div>
       </div>)
