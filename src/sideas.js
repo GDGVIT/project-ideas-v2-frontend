@@ -141,32 +141,41 @@ addComment=(id, e, pid, index)=>{
     }),
     body:JSON.stringify(votebody)
   })
-  .then(res=>res.json())
-  .then(data=>{
-    console.log(data)
-    console.log(this.state.comment)
-    if(index){
-      var reply = this.state.comment
-      reply[index].child_comments.push(data.message)
+  .then(res=>{
+    // console.log(res)
+    if(res.status===200){
+      return(res.json())
+    }else if(res.status===403){
       this.setState({
-        comment: reply,
         loading:false
       })
-    }else{
-      var com = this.state.comment
-      com.push(data.message)
-      this.setState({
-        comment:com,
-        loading:false
-      })
-      // window.location.reload()
+      this.props.alert.show('You need to log in to perform this action!')
     }
-    // window.location.reload()
-
-  // this.state.comment
-    // this.props.alert.show(data.message)
   })
-  .catch(error=>console.error(error))
+  .then(data=>{
+    if(data){
+      if(index){
+        var reply = this.state.comment
+        reply[index].child_comments.push(data.message)
+        this.setState({
+          comment: reply,
+          loading:false
+        })
+      }else{
+        var com = this.state.comment
+        com.push(data.message)
+        this.setState({
+          comment:com,
+          loading:false
+        })
+      }
+    }
+  })
+  .catch(error=>{
+    if(error){
+      console.log('error')
+    }
+  })
 }
 
 changePage=(page)=>{

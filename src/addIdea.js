@@ -21,8 +21,9 @@ const Addidea = (props) =>{
             if(res.status === 200){
                 setLoad(false)
                 props.alert.show("Idea submitted")
-            }else{
-                props.alert.show("Something went wrong")
+            }else if(res.status===403){
+                setLoad(false)
+                props.alert.show("You need to log in to perform this action")
             }    
             return(res.json())
         })
