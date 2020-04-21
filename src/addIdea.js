@@ -5,6 +5,7 @@ import Load2 from './loading2'
 
 const Addidea = (props) =>{
     const [loading, setLoad] = useState(false)
+    const [al, setAl] = useState(true)
 
     const onFinish =(values)=>{
         setLoad(true)
@@ -23,7 +24,13 @@ const Addidea = (props) =>{
                 props.alert.show("Idea submitted")
             }else if(res.status===403){
                 setLoad(false)
-                props.alert.show("You need to log in to perform this action")
+                    if(al){
+                        props.alert.show('You need to log in to perform this action')
+                        setAl(false)
+                        setTimeout(()=>{
+                            setAl(true)
+                        },5000)
+                        }
             }    
             return(res.json())
         })

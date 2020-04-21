@@ -25,8 +25,8 @@ class Home extends Component{
               <Card className="homeCard" data-aos='fade-up'>
                 <Row gutter={16}>
                   <Col span={22} className='card-cont uhh'>
-                    <div><h2>Welcome to,</h2></div>
-                    <div><p>Ideathon summer 2020</p></div>
+                    <div><h2>Ideathon summer 2020</h2></div>
+                    <div><p>Be a quarantine Idea queen</p></div>
                   </Col>
                 </Row>
               </Card>
