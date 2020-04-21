@@ -3,7 +3,7 @@ import {withAlert} from 'react-alert'
 import Nav from './nav'
 import { Card, Row, Col, Input, Form, Pagination} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
-
+import Load2 from './loading2'
 
 
 class Sideas extends Component{
@@ -14,7 +14,8 @@ class Sideas extends Component{
           idea: [],
           comment:[],
           total:1,
-          al:true
+          al:true,
+          loading:false
         }
     }
   
@@ -34,6 +35,9 @@ class Sideas extends Component{
       console.log('search:', val);
     }
   componentDidMount=()=>{
+    this.setState({
+      loading:true
+    })
         fetch(process.env.REACT_APP_BASEURL+'app/view_idea/'+this.props.match.params.ideaID+'/',{
           method:'GET'
         })
@@ -41,7 +45,8 @@ class Sideas extends Component{
         .then(data=>{
           console.log(data)
           this.setState({
-            idea: data.message
+            idea: data.message,
+            loading:false
           })
         })
         .catch(error=>console.error(error))
@@ -54,10 +59,18 @@ class Sideas extends Component{
           console.log(data)
             this.setState({
               comment: data.message,
-              total:data.total_pages
+              total:data.total_pages,
+              loading:false
             })
         })
-        .catch(error=>console.error(error))
+        .catch(error=>{
+          if(error){
+            console.log(error)
+            this.setState({
+              loading:false
+            })
+          }
+        })
        
     }
 
@@ -110,12 +123,16 @@ class Sideas extends Component{
       // })
     }
 addComment=(id, e, pid, index)=>{
+  this.setState({
+    loading:true
+  })
   let votebody={
     'idea_id':id,
     'body':e.body,
     'parent_comment_id':pid
   }
   console.log(index)
+
   fetch(process.env.REACT_APP_BASEURL+'app/comment/',{
     method:'POST',
     headers: new Headers({
@@ -132,15 +149,17 @@ addComment=(id, e, pid, index)=>{
       var reply = this.state.comment
       reply[index].child_comments.push(data.message)
       this.setState({
-        comment: reply
+        comment: reply,
+        loading:false
       })
     }else{
-      // var com = this.state.comment
-      // com.push(data.message)
-      // this.setState({
-      //   comment:com
-      // })
-      window.location.reload()
+      var com = this.state.comment
+      com.push(data.message)
+      this.setState({
+        comment:com,
+        loading:false
+      })
+      // window.location.reload()
     }
     // window.location.reload()
 
@@ -151,6 +170,9 @@ addComment=(id, e, pid, index)=>{
 }
 
 changePage=(page)=>{
+  this.setState({
+    loading:true
+  })
   fetch(process.env.REACT_APP_BASEURL+'app/comment/'+this.props.match.params.ideaID+'/?offset='+(page-1), {
     method:'GET'
   })
@@ -158,7 +180,8 @@ changePage=(page)=>{
   .then(data=>{
     console.log(data)
     this.setState({
-      comment:data.message
+      comment:data.message,
+      loading:false
     })
   })
   .catch(error=>{
@@ -169,7 +192,7 @@ changePage=(page)=>{
 }
   
     render(){
-      var {comment} = this.state;
+      var {comment, loading} = this.state;
       var coms = comment.map((data,dataindex)=>{
         let theDate = data.date_time.substring(0,10);
         var reps = data.child_comments.length>0?(data.child_comments.map((child)=>{
@@ -264,6 +287,7 @@ changePage=(page)=>{
           <Pagination defaultCurrent={1} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
           </div>
         </div>
+        {loading && <Load2 />}
       </div>)
     }
 }
