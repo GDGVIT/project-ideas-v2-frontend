@@ -204,7 +204,7 @@ class Nav extends Component{
                         closable={true}
                         onClose={this.onClose}
                         visible={this.state.visible}
-                        width={window.innerWidth}
+                        width={window.innerWidth<400?(window.innerWidth):(400)}
                         zIndex="1001"
                     >
                         <Addidea />

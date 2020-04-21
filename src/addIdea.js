@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Form, Input, Button} from 'antd'
 import { withAlert } from 'react-alert'
+import Load2 from './loading2' 
 
 const Addidea = (props) =>{
+    const [loading, setLoad] = useState(false)
 
     const onFinish =(values)=>{
+        setLoad(true)
         console.log(values)
         fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
             method: 'POST',
@@ -16,7 +19,10 @@ const Addidea = (props) =>{
         })
         .then(res=>{
             if(res.status === 200){
+                setLoad(false)
                 props.alert.show("Idea submitted")
+            }else{
+                props.alert.show("Something went wrong")
             }    
             return(res.json())
         })
@@ -27,6 +33,7 @@ const Addidea = (props) =>{
     }
     return(
         <div className='formholder'>
+        {loading && <Load2 />}
         <h2>Add an Idea</h2>
             <Form onFinish={onFinish} name="IdeaForm">
                 <h2>Title</h2>

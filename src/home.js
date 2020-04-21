@@ -24,59 +24,9 @@ class Home extends Component{
             <Col span={24}>
               <Card className="homeCard" data-aos='fade-up'>
                 <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card className="homeCard" data-aos='fade-up'>
-                <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card className="homeCard" data-aos='fade-up'>
-                <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card className="homeCard" data-aos='fade-up'>
-                <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card className="homeCard" data-aos='fade-up'>
-                <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Card className="homeCard" data-aos='fade-up'>
-                <Row gutter={16}>
-                  <Col span={22} className='card-cont'>
-                    <div><h2>We, at DSC VIT</h2></div>
-                    <div><p>are determined to work with, and for the society.</p></div>
+                  <Col span={22} className='card-cont uhh'>
+                    <div><h2>Welcome to,</h2></div>
+                    <div><p>Ideathon summer 2020</p></div>
                   </Col>
                 </Row>
               </Card>
