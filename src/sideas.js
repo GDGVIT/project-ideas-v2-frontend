@@ -49,7 +49,11 @@ class Sideas extends Component{
             loading:false
           })
         })
-        .catch(error=>console.error(error))
+        .catch(error=>{
+          if(error){
+            this.props.history.push('/ideas')
+          }
+        })
 
         fetch(process.env.REACT_APP_BASEURL+'app/comment/'+this.props.match.params.ideaID+'/?offset=0',{
             method:'GET'
@@ -154,16 +158,19 @@ addComment=(id, e, pid, index)=>{
   })
   .then(data=>{
     if(data){
-      if(index){
+      if(index >= 0){
         var reply = this.state.comment
+        console.log(index)
         reply[index].child_comments.push(data.message)
+        console.log(reply)
+
         this.setState({
           comment: reply,
           loading:false
         })
       }else{
         var com = this.state.comment
-        com.push(data.message)
+        com.unshift(data.message)
         this.setState({
           comment:com,
           loading:false
@@ -227,6 +234,8 @@ changePage=(page)=>{
               <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'900'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h3>{data.body}</h3></div>
               <div> 
+          {reps}
+
               <Form className="sikebich" onFinish={(val)=>{this.addComment(data.idea_id, val, data.id, dataindex)}}>
                     <Form.Item
                       name="body"
@@ -237,7 +246,6 @@ changePage=(page)=>{
                </div>
             </Col>
           </Row>
-          {reps}
           <hr />  
           </div>
         )
