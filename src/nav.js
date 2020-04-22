@@ -29,7 +29,7 @@ class Nav extends Component{
     
     verifyCallback = (recaptchaToken) => {
         // Here you will get the final recaptchaToken!!!  
-        console.log(recaptchaToken, "<= your recaptcha token")
+        // console.log(recaptchaToken, "<= your recaptcha token")
         recaptok = recaptchaToken;
     }
     componentDidMount(){
@@ -83,12 +83,12 @@ class Nav extends Component{
                 .then(data =>{
                     console.log(data)
                     if(data){
-                        localStorage.setItem("token", 'Token '+data.User.token)
-                        localStorage.setItem("user", user.displayName)
                         this.setState({
                             isLoggedIn:true,
                             loading: false
                         })
+                        localStorage.setItem("token", 'Token '+data.User.token)
+                        localStorage.setItem("user", user.displayName)
                     }
                 })
                 .catch(error=>console.error(error))

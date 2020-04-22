@@ -49,7 +49,7 @@ const Addidea = (props) =>{
                     <Input placeholder='Describe your idea in a short and concise manner.'/>
                 </Form.Item>
                 <h2>Description</h2>
-                <Form.Item name='project_description' rules={[{ required: true, message: 'Please can not leave this empty!' }]}>
+                <Form.Item name='project_description' rules={[{ required: true, message: 'You can not leave this empty!' }]}>
                     <Input.TextArea rows={4} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>

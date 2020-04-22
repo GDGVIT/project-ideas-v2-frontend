@@ -18,13 +18,46 @@ body{
   }
   .homeHeading{
     width: 60%;
+    margin-top: 100px;
+    height: 90vh;
   }
   .homeHeading>h1{
-    font-size: 4rem;
+    font-size: 3.4rem;
+    font-weight: 600;
   }
-  .homeHeading>p{
-    text-align: right;
+  .sideimg{
+    position: absolute;
+    right: 50px;
+    top: 20px;
+    z-index: -1000;
   }
+  .home .ant-btn{
+    border-radius: 10px;
+    border: 2px solid #2785FC;
+    width: 150px;
+    height: 40px;
+    padding-top:4px;
+    margin-top: 40px;
+    font-weight: bold;
+    border: none;
+  }
+
+.home-procedure{
+ min-height: 90vh;
+}
+.homecar-image{
+  text-align: center;
+  margin-bottom: 40px;
+}
+.homecar-image>img{
+  width: 70vw;
+  height: auto;
+}
+.home-procedure .ant-row .ant-col-12:nth-child(1){
+  text-align: right;
+  padding-right: 20px;
+}
+
   .homeCard{
     width: 50%;
     height: 300px;
@@ -37,12 +70,52 @@ body{
       margin-bottom: 60px ;
   }
 
+  /* trending */
+  .home-trending{
+   min-height: 60vh;
+  }
+
+  .trending-cards{
+    height: 370px;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+  }
+  .trending-cards::-webkit-scrollbar{
+    display: none;
+  }
+  .trending-cards .ant-card{
+    height: 340px;
+    width: 300px;
+    display: inline-table;
+    margin: 20px;
+    border-radius: 58px;
+    border: 1px solid #2785FC;
+    cursor: pointer;
+  }
+  .trending-cards .ant-card *{
+    white-space: normal;
+  }
+  .trending-cards .ant-card .idea-desc{
+    height: 150px;
+  }
+  .trending-cards .ant-card-body{
+    height: 100%;
+    padding-top: 50px;
+  }
   @media(max-width:992px){
     .homeHeading{
       width: 100%;
     }
     .homeCard{
       width: 80%;
+    }
+    .sideimg{
+      opacity: 0.5;
+      width: 300px;
+      height: auto;
     }
   }
   @media(max-width: 768px){
