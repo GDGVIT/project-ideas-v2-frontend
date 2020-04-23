@@ -13,7 +13,7 @@ class Admin extends Component{
         }
     }
     componentDidMount() {
-        if(localStorage.getItem("admintokenx12x12"){
+        if(!localStorage.getItem("admintokenx12x12"){
             this.props.history.push('/adminloginx')
         }
 
