@@ -89,7 +89,7 @@ class Home extends Component{
           <div className="homeHeading">
 
             <h1>DSC Idea Hub</h1>
-            <p>~"DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/> Everything Begins With An Idea." – Earl Nightengale</p>
+            <p>"DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/> Everything Begins With An Idea." – Earl Nightengale</p>
             <AnchorLink offset='100' className='ant-btn ant-btn-primary' href="#procedure">Learn More</AnchorLink>
           </div>
 
