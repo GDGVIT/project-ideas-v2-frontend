@@ -9,7 +9,7 @@ const Addidea = (props) =>{
 
     const onFinish =(values)=>{
         setLoad(true)
-        console.log(values)
+        // console.log(values)
         fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
             method: 'POST',
             headers: new Headers({
@@ -35,7 +35,7 @@ const Addidea = (props) =>{
             return(res.json())
         })
         .then(data=>{
-            console.log(data)
+            // console.log(data)
         })
         .catch(error=>console.error(error))
     }

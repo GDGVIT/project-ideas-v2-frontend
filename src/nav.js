@@ -60,9 +60,9 @@ class Nav extends Component{
     
               // This gives you a Google Access Token. You can use it to access the Google API.
                 var token = result.credential.accessToken;
-                console.log(token)
+                // console.log(token)
                 var user = result.user;
-                console.log(user)
+                // console.log(user)
                 let dataSent = {
                     "username":user.displayName,
                     "platform":0,
@@ -81,7 +81,7 @@ class Nav extends Component{
                 })
                 .then(res=>res.json())
                 .then(data =>{
-                    console.log(data)
+                    // console.log(data)
                     if(data){
                         this.setState({
                             isLoggedIn:true,
@@ -100,7 +100,7 @@ class Nav extends Component{
             // Handle Errors here.
             // var errorCode = error.code;
             // var errorMessage = error.message;
-            console.log(error)
+            // console.log(error)
             // The email of the user's account used.
             // var email = error.email;
             // The firebase.auth.AuthCredential type that was used.
@@ -133,7 +133,9 @@ class Nav extends Component{
             this.setState({isLoggedIn:false})
         })
         .catch(error=>{
-            console.error(error);
+            if(error){
+                console.error(error);
+            }
         })
 
 
