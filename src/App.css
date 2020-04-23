@@ -103,6 +103,7 @@ body{
     border: 1px solid #2785FC;
     cursor: pointer;
   }
+
   .trending-cards .ant-card *{
     white-space: normal;
   }
@@ -134,13 +135,34 @@ body{
     .homeCard{
       width: 95%;
     }
+    .homeHeading{
+      margin-top: 150px;
+      height: auto;
+      margin-bottom: 150px;
+    }
+    .sideimg{
+      width: 200px;
+    }
   }
   @media(max-width: 400px){
     .homeHeading>h1{
       font-size: 2rem;
     }
+    .trending-cards .ant-card{
+      width: 250px;
+      height: 340px;
+    }
+    /* .trending-cards .ant-card .idea-desc{
+      height: 125px;
+    } */
+    .trending-cards .ant-card-body{
+      height: 100%;
+      padding-top: 30px;
+  
+    }
 
   }
+
   /* nav */
   .navs{
       float: left;

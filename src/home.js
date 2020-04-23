@@ -58,8 +58,8 @@ class Home extends Component{
       var dataDisp = trending.length?(
         trending.map(data=>{
           let desc=''
-          if(data.project_description.length>=195){
-            desc = data.project_description.substring(0,195)+'...'
+          if(data.project_description.length>=170){
+            desc = data.project_description.substring(0,170)+'...'
           }else{
             desc = data.project_description;
           }
@@ -102,7 +102,7 @@ class Home extends Component{
               <img alt="ideation procedure" src={homecar}  data-aos='fade-up' />
             </div>
             <div className="homecar-desc"  data-aos='fade-up'> 
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.</p>
+              <p>A good product goes through multiple stages. It starts from the ideation phase followed by regular modifications of the idea until it's feasible enough to build a solution based on it!</p>
             </div>
             <div>
             <Row>
@@ -121,18 +121,18 @@ class Home extends Component{
             <h2 style={{color:'#2785FC', fontWeight:'bold', marginBottom:'40px'}}  data-aos='fade-up'>
               Trending Ideas
             </h2>
-            <div className="homecar-desc"  data-aos='fade-up'> 
-              <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.</p>
-            </div>
             <div className="trending-cards">
               {dataDisp}
             
             </div>
           </div>
-          <div className="home-trending">
+          <div className="home-trending" style={{marginBottom:'50px', marginTop:'50px'}}>
             <h2 style={{color:'#2785FC', fontWeight:'bold', marginBottom:'40px'}}  data-aos='fade-up'>
               Ideas made real
             </h2>
+            <div className="homecar-desc"  data-aos='fade-up'> 
+              <p>A plethora of ideas were submitted in the past and we managed to convert them to successful projects which had the potential to help a lot of people around the globe.</p>
+            </div>
           <div className="trending-cards">
               <Card data-aos="fade-left">
                 <h3>
