@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, BackTop} from 'antd'
+import { Card, Row, Col, BackTop, Button, Drawer} from 'antd'
 import homecar from './assets/home-car.svg'
 import hometop from './assets/home-top.svg'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
+import Addidea from './addIdea'
 
 
 class Home extends Component{
@@ -13,7 +14,8 @@ class Home extends Component{
         this.state={
           isLoggedIn: false,
           trending: [],
-          mssg:''
+          mssg:'',
+          visible:false
         }
     }
 
@@ -40,6 +42,16 @@ class Home extends Component{
     openSidea=(id)=>{
       this.props.history.push('/ideas/'+id)
     }
+    onClose = () =>{
+      this.setState({
+            visible: false
+      })
+  }      
+  openDrawer = () =>{
+    this.setState({
+          visible: true
+    })
+}
 
     render(){
       const {trending, mssg}=this.state
@@ -94,7 +106,12 @@ class Home extends Component{
             </div>
             <div>
             <Row>
-              <Col span={24} data-aos="fade-up">
+            <Col span={12}>
+              <Button type="primary" data-aos="fade-right" onClick={this.openDrawer}>
+                Add Idea
+              </Button>
+            </Col>
+              <Col span={12} data-aos="fade-right">
                 <AnchorLink  className='ant-btn ant-btn-primary' href="#trending">Trending Ideas</AnchorLink>
               </Col>
             </Row>
@@ -148,6 +165,16 @@ class Home extends Component{
           </div>
 
         </div>
+        <Drawer
+                        placement="right"
+                        closable={true}
+                        onClose={this.onClose}
+                        visible={this.state.visible}
+                        width={window.innerWidth<400?(window.innerWidth):(400)}
+                        zIndex="1001"
+                    >
+                        <Addidea />
+        </Drawer>
       </div>
       )
     }

@@ -194,6 +194,12 @@ class Ideas extends Component{
       let ideaz = cards.length>0?(cards.map((data, index)=>{
          console.log(index)
         let theDate = data.date_time.substring(0,10);
+        let desc
+        if(data.project_description.length>=250){
+          desc = data.project_description.substring(0,250)+'...'
+        }else{
+          desc = data.project_description;
+        }
         return(
           <Card key={data.id} data-aos='fade-up'>
           <Row gutter={16}>
@@ -205,7 +211,7 @@ class Ideas extends Component{
             <Col span={22} className='card-cont'>
             <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h2>{data.project_title}</h2></div>
-              <div><p>{data.project_description}</p></div>
+              <div><p>{desc}</p></div>
               <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />Discuss...></p></div>
             </Col>
           </Row>
