@@ -59,7 +59,7 @@ class Nav extends Component{
                 })
     
               // This gives you a Google Access Token. You can use it to access the Google API.
-                var token = result.credential.accessToken;
+                // var token = result.credential.accessToken;
                 // console.log(token)
                 var user = result.user;
                 // console.log(user)
