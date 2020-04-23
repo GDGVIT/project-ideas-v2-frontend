@@ -13,7 +13,7 @@ class Admin extends Component{
         }
     }
     componentDidMount() {
-        if(localStorage.getItem("admintokenx12x12") !== this.props.location.state){
+        if(!localStorage.getItem("admintokenx12x12")){
             this.props.history.push('/adminloginx')
         }
 
@@ -25,7 +25,7 @@ class Admin extends Component{
         })
         .then(res=>res.json())
         .then(data=>{
-            console.log(data)
+            // console.log(data)
             this.setState({
                 unpubCards: data.message
             })
@@ -40,7 +40,7 @@ class Admin extends Component{
         })
         .then(res=>res.json())
         .then(data=>{
-            console.log(data)
+            // console.log(data)
             this.setState({
                 rejCards: data.message
             })
@@ -83,7 +83,7 @@ class Admin extends Component{
             setTimeout(()=>{
                 window.location.reload()
             }, 1500)
-            console.log(data)
+            // console.log(data)
         })
     }
 

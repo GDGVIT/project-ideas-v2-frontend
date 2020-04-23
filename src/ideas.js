@@ -26,7 +26,7 @@ class Ideas extends Component{
     // SELECT CSS
   onChange=(e)=>{
     e.persist()
-    console.log(e)
+    // console.log(e)
     this.setState({
       search: e.target.value
     })
@@ -49,8 +49,8 @@ class Ideas extends Component{
   }
 
   componentDidMount() {
-    console.log(document.querySelector('.main').offsetHeight)
-    console.log(window.innerHeight)
+    // console.log(document.querySelector('.main').offsetHeight)
+    // console.log(window.innerHeight)
     this.setState({
       loading:true
     })
@@ -59,13 +59,13 @@ class Ideas extends Component{
     })
     .then(res=>res.json())
     .then(data=>{
-      console.log(data)
+      // console.log(data)
       this.setState({
         cards:data.message,
         loading:false,
         total:data.total_pages
       })
-      console.log(this.state)
+      // console.log(this.state)
     })
     .catch(error=>{
       if(error){
@@ -81,7 +81,7 @@ class Ideas extends Component{
   addVote=(vote, id, index)=>{
 
     let cardsVoted = this.state.cards;
-    console.log('otherstuff',vote, id, index)
+    // console.log('otherstuff',vote, id, index)
    let votebody = {
       'idea_id':id,
       'vote_type':vote
@@ -168,7 +168,7 @@ class Ideas extends Component{
       })
       .then(res=>res.json())
       .then(data=>{
-        console.log(data)
+        // console.log(data)
         this.setState({
           cards:data.message
         })
@@ -192,8 +192,14 @@ class Ideas extends Component{
       const {loading} = this.state
       var {cards} = this.state;
       let ideaz = cards.length>0?(cards.map((data, index)=>{
-         console.log(index)
+        //  console.log(index)
         let theDate = data.date_time.substring(0,10);
+        let desc
+        if(data.project_description.length>=250){
+          desc = data.project_description.substring(0,250)+'...'
+        }else{
+          desc = data.project_description;
+        }
         return(
           <Card key={data.id} data-aos='fade-up'>
           <Row gutter={16}>
@@ -205,8 +211,9 @@ class Ideas extends Component{
             <Col span={22} className='card-cont'>
             <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h2>{data.project_title}</h2></div>
-              <div><p>{data.project_description}</p></div>
-              <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />Discuss...></p></div>
+              <div><p>{desc}</p></div>
+              <div><p className="tagStyle">{data.tags}</p></div>
+              <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />discuss...</p></div>
             </Col>
           </Row>
         </Card>

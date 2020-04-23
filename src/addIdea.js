@@ -9,7 +9,7 @@ const Addidea = (props) =>{
 
     const onFinish =(values)=>{
         setLoad(true)
-        console.log(values)
+        // console.log(values)
         fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
             method: 'POST',
             headers: new Headers({
@@ -35,7 +35,7 @@ const Addidea = (props) =>{
             return(res.json())
         })
         .then(data=>{
-            console.log(data)
+            // console.log(data)
         })
         .catch(error=>console.error(error))
     }
@@ -45,15 +45,27 @@ const Addidea = (props) =>{
         <h2>Add an Idea</h2>
             <Form onFinish={onFinish} name="IdeaForm">
                 <h2>Title</h2>
-                <Form.Item name='project_title' rules={[{ required: true, message: 'You can not leave this epmty!' }]}>
+                <Form.Item name='project_title' rules={[
+                    { required: true, message: 'You can not leave this epmty!' },
+                        {max: 100, message:'max 100 characters only!'}
+
+                    ]}>
                     <Input placeholder='Describe your idea in a short and concise manner.'/>
                 </Form.Item>
                 <h2>Description</h2>
-                <Form.Item name='project_description' rules={[{ required: true, message: 'Please can not leave this empty!' }]}>
+                <Form.Item name='project_description' 
+                rules={[
+                    { required: true, message: 'You can not leave this empty!' },
+                    {max: 500, message:'max 500 characters only!'}
+                    ]}
+                >
                     <Input.TextArea rows={4} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>
-                <Form.Item name='tags' rules={[{ required: true, message: 'You can not leave this epmty!' }]}>
+                <Form.Item name='tags' rules={[
+                    { required: true, message: 'You can not leave this epmty!' },
+                    {max: 50, message:'max 50 characters only!'}
+                    ]}>
                     <Input placeholder='The category of idea, separated by a comma (if multiple).'/>
                 </Form.Item>
                 <Form.Item>

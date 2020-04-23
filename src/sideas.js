@@ -20,19 +20,19 @@ class Sideas extends Component{
     }
   
   onChange=(value)=>{
-    console.log(value)
+    // console.log(value)
   }
 
     onBlur=()=>{
-      console.log('blur');
+      // console.log('blur');
     }
     
   onFocus=()=>{
-      console.log('focus');
+      // console.log('focus');
     }
     
   onSearch=(val)=>{
-      console.log('search:', val);
+      // console.log('search:', val);
     }
   componentDidMount=()=>{
     this.setState({
@@ -43,7 +43,7 @@ class Sideas extends Component{
         })
         .then(res=>res.json())
         .then(data=>{
-          console.log(data)
+          // console.log(data)
           this.setState({
             idea: data.message,
             loading:false
@@ -60,7 +60,7 @@ class Sideas extends Component{
           })
         .then(res=>res.json())
         .then(data=>{
-          console.log(data)
+          // console.log(data)
             this.setState({
               comment: data.message,
               total:data.total_pages,
@@ -82,7 +82,7 @@ class Sideas extends Component{
 
       let cardsVoted = this.state.idea;
 
-      console.log('otherstuff',vote, id)
+      // console.log('otherstuff',vote, id)
      let votebody = {
         'idea_id':id,
         'vote_type':vote
@@ -135,7 +135,7 @@ addComment=(id, e, pid, index)=>{
     'body':e.body,
     'parent_comment_id':pid
   }
-  console.log(index)
+  // console.log(index)
 
   fetch(process.env.REACT_APP_BASEURL+'app/comment/',{
     method:'POST',
@@ -160,9 +160,9 @@ addComment=(id, e, pid, index)=>{
     if(data){
       if(index >= 0){
         var reply = this.state.comment
-        console.log(index)
+        // console.log(index)
         reply[index].child_comments.push(data.message)
-        console.log(reply)
+        // console.log(reply)
 
         this.setState({
           comment: reply,
@@ -194,7 +194,7 @@ changePage=(page)=>{
   })
   .then(res=>res.json())
   .then(data=>{
-    console.log(data)
+    // console.log(data)
     this.setState({
       comment:data.message,
       loading:false
@@ -285,6 +285,7 @@ changePage=(page)=>{
                   <div><p>{this.state.idea.username}</p></div>
                   <div><h2>{this.state.idea.project_title}</h2></div>
                   <div><h3>{this.state.idea.project_description}</h3></div>
+                  <div><p className="tagStyle">{this.state.idea.tags}</p></div>
                   <div> 
                   <Form name="parentComment" className="sikebich" onFinish={(val)=>{this.addComment(this.state.idea.id, val, this.state.idea.parent_comment_id)}}>
                     <Form.Item
