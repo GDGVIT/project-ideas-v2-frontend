@@ -212,7 +212,8 @@ class Ideas extends Component{
             <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{desc}</p></div>
-              <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />Discuss...></p></div>
+              <div><p className="tagStyle">{data.tags}</p></div>
+              <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />discuss...</p></div>
             </Col>
           </Row>
         </Card>

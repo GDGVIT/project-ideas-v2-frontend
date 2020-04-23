@@ -285,6 +285,7 @@ changePage=(page)=>{
                   <div><p>{this.state.idea.username}</p></div>
                   <div><h2>{this.state.idea.project_title}</h2></div>
                   <div><h3>{this.state.idea.project_description}</h3></div>
+                  <div><p className="tagStyle">{this.state.idea.tags}</p></div>
                   <div> 
                   <Form name="parentComment" className="sikebich" onFinish={(val)=>{this.addComment(this.state.idea.id, val, this.state.idea.parent_comment_id)}}>
                     <Form.Item

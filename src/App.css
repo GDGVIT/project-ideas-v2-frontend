@@ -412,3 +412,10 @@ margin: auto auto;
 .grecaptcha-badge{
   display: none !important;
 }
+
+.tagStyle{
+  color: #2785FC;
+  opacity: 0.6;
+  font-style: italic;
+  font-size: 12px;
+}
