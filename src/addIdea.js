@@ -112,7 +112,7 @@ const Addidea = (props) =>{
                     {max: 50, message:'max 50 characters only!'}
                     ]}
                     >
-                    <Input placeholder='The category of idea, separated by a comma (if multiple).'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
+                    <Input placeholder='Mention tags for your project'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
                     {tagz.map((tag, index)=>{
                         return(<Tag color="blue" key={tag} closable onClose={()=>{handleDelete(index)}}> {tag} </Tag>)
                     })}
