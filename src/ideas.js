@@ -201,7 +201,7 @@ class Ideas extends Component{
         }else{
           desc = data.project_description;
         }
-        let splitTags = data.tags.split(' ')
+        let splitTags = data.tags.split(',')
         // console.log(splitTags)
         let tags = splitTags.map(tag=>{
           return(<Tag color="blue" key={tag}>{tag}</Tag>)

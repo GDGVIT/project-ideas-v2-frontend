@@ -42,34 +42,43 @@ const Addidea = (props) =>{
         }
         setLoad(true)
         console.log(values)
-        fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-            }),
-            body:JSON.stringify(values)
-        })
-        .then(res=>{
-            if(res.status === 200){
+        if(values.project_title==='' || values.project_description==='' || values.tags===''){
+            props.alert.show('You can not leave any of the fields empty!')
+            setLoad(false)
+        }else{
+            fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                }),
+                body:JSON.stringify(values)
+            })
+            .then(res=>{
+                if(res.status === 200){
+                    setLoad(false)
+                    props.alert.show("Idea submitted")
+                }else if(res.status===403){
+                    setLoad(false)
+                        if(al){
+                            props.alert.show('You need to log in to perform this action')
+                            setAl(false)
+                            setTimeout(()=>{
+                                setAl(true)
+                            },5000)
+                            }
+                }    
+                return(res.json())
+            })
+            .then(data=>{
+                // console.log(data)
+            })
+            .catch(error=>{
+                props.alert.show('something went wrong')
                 setLoad(false)
-                props.alert.show("Idea submitted")
-            }else if(res.status===403){
-                setLoad(false)
-                    if(al){
-                        props.alert.show('You need to log in to perform this action')
-                        setAl(false)
-                        setTimeout(()=>{
-                            setAl(true)
-                        },5000)
-                        }
-            }    
-            return(res.json())
-        })
-        .then(data=>{
-            // console.log(data)
-        })
-        .catch(error=>console.error(error))
+            })
+        }
+
     }
 
     const handleInputChange = (v, type) =>{
@@ -90,7 +99,7 @@ const Addidea = (props) =>{
             <Form name="IdeaForm">
                 <h2>Title</h2>
                 <Form.Item name='project_title' rules={[
-                    { required: true, message: 'You can not leave this epmty!' },
+                    { required: true, message: 'You can not leave this empty!' },
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
@@ -112,7 +121,7 @@ const Addidea = (props) =>{
                     {max: 50, message:'max 50 characters only!'}
                     ]}
                     >
-                    <Input placeholder='The category of idea, separated by a comma (if multiple).'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
+                    <Input placeholder="Just input a value and press enter!" value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
                     {tagz.map((tag, index)=>{
                         return(<Tag color="blue" key={tag} closable onClose={()=>{handleDelete(index)}}> {tag} </Tag>)
                     })}
