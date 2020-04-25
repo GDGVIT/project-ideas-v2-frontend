@@ -38,7 +38,7 @@ class App extends Component{
       }
   }
   componentDidMount() {
-    loadReCaptcha("6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz");
+    loadReCaptcha(process.env.REACT_APP_SITEKEY);
     AOS.init()
   }
   

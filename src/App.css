@@ -98,7 +98,7 @@ body{
     height: 340px;
     width: 300px;
     display: inline-table;
-    margin: 20px;
+    margin: 20px 20px 20px 0px;
     border-radius: 58px;
     border: 1px solid #2785FC;
     cursor: pointer;
@@ -143,6 +143,11 @@ body{
     .sideimg{
       width: 200px;
     }
+    .home-procedure{
+      min-height: 400px;
+      height: auto;
+      margin-bottom: 50px;
+     }
   }
   @media(max-width: 400px){
     .homeHeading>h1{
@@ -158,8 +163,12 @@ body{
     .trending-cards .ant-card-body{
       height: 100%;
       padding-top: 30px;
-  
     }
+  .home .ant-btn{
+    width: 125px;
+    height: 40px;
+    padding: 4px 7px 4px 7px;
+  }
 
   }
 
@@ -287,8 +296,8 @@ body{
  hr{
    width: 91.76%;
    margin: auto auto;
-   color: gray;
-   box-shadow: 0px 0px 3px lightgray ;
+   color: #f9f9f9;
+   /* box-shadow: 0px 0px 3px lightgray ; */
  }
  .ant-input-affix-wrapper{
    border: none;
@@ -440,4 +449,8 @@ margin: auto auto;
   opacity: 0.6;
   font-style: italic;
   font-size: 12px;
+}
+
+.ant-tag-blue{
+  border-radius: 10px;
 }

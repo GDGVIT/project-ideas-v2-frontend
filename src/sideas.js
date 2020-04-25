@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Form, Pagination} from 'antd'
+import { Card, Row, Col, Input, Form, Pagination, Tag} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
@@ -250,6 +250,12 @@ changePage=(page)=>{
           </div>
         )
       })
+      const {idea} = this.state
+      let splitTags = idea.tags?(idea.tags.split(' ')):([""])
+      console.log(splitTags)
+      let tags = splitTags.map(tag=>{
+        return(<Tag color="blue" key={tag}>{tag}</Tag>)
+      })
       return(
       <div>
         <Nav active='ideas'/>
@@ -275,7 +281,7 @@ changePage=(page)=>{
           </div> */}
           <div className="IdeaCards">
             <Card key={this.state.idea.id}>
-              <Row gutter={16}>
+              <Row gutter={16} style={{marginBottom:"50px"}}>
                 <Col span={1} className="vote">
                   <CaretUpFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(1, this.state.idea.id)}} />
                   <p>{this.state.idea.votes}</p>
@@ -285,7 +291,7 @@ changePage=(page)=>{
                   <div><p>{this.state.idea.username}</p></div>
                   <div><h2>{this.state.idea.project_title}</h2></div>
                   <div><h3>{this.state.idea.project_description}</h3></div>
-                  <div><p className="tagStyle">{this.state.idea.tags}</p></div>
+                  <div>{tags}</div>
                   <div> 
                   <Form name="parentComment" className="sikebich" onFinish={(val)=>{this.addComment(this.state.idea.id, val, this.state.idea.parent_comment_id)}}>
                     <Form.Item
