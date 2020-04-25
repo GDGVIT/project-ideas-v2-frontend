@@ -251,7 +251,7 @@ changePage=(page)=>{
         )
       })
       const {idea} = this.state
-      let splitTags = idea.tags?(idea.tags.split(' ')):([""])
+      let splitTags = idea.tags?(idea.tags.split(',')):([""])
       console.log(splitTags)
       let tags = splitTags.map(tag=>{
         return(<Tag color="blue" key={tag}>{tag}</Tag>)

@@ -23,7 +23,8 @@ class Nav extends Component{
             current: props.active,
             isLoggedIn: false,
             visible: false,
-            loading: false
+            loading: false,
+            currentUser: ''
         }
     }
     
@@ -86,7 +87,8 @@ class Nav extends Component{
                     if(data){
                         this.setState({
                             isLoggedIn:true,
-                            loading: false
+                            loading: false,
+                            currentUser: user.displayName
                         })
                         localStorage.setItem("token", 'Token '+data.User.token)
                         localStorage.setItem("user", user.displayName)

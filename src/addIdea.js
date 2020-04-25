@@ -25,8 +25,13 @@ const Addidea = (props) =>{
     }
  
    const handleAddition = () => {
-       setTags([...tagz, val]);
-       setVal('')
+       if(!tagz.includes(val.trim())){
+        setTags([...tagz, val.trim()]);
+        setVal('')
+       }else{
+        setVal('')
+       }
+
     }
 
 
@@ -42,34 +47,45 @@ const Addidea = (props) =>{
         }
         setLoad(true)
         console.log(values)
-        fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-            }),
-            body:JSON.stringify(values)
-        })
-        .then(res=>{
-            if(res.status === 200){
+        if(values.project_title==='' || values.project_description==='' || values.tags===''){
+            props.alert.show('You can not leave any of the fields empty!')
+            setLoad(false)
+        }else{
+            fetch(process.env.REACT_APP_BASEURL+'app/post_ideas/', {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                }),
+                body:JSON.stringify(values)
+            })
+            .then(res=>{
+                if(res.status === 200){
+                    setLoad(false)
+                    props.alert.show("Idea submitted")
+                    setTitle('')
+                    setDesc('')
+                }else if(res.status===403){
+                    setLoad(false)
+                        if(al){
+                            props.alert.show('You need to log in to perform this action')
+                            setAl(false)
+                            setTimeout(()=>{
+                                setAl(true)
+                            },5000)
+                            }
+                }    
+                return(res.json())
+            })
+            .then(data=>{
+                // console.log(data)
+            })
+            .catch(error=>{
+                props.alert.show('something went wrong')
                 setLoad(false)
-                props.alert.show("Idea submitted")
-            }else if(res.status===403){
-                setLoad(false)
-                    if(al){
-                        props.alert.show('You need to log in to perform this action')
-                        setAl(false)
-                        setTimeout(()=>{
-                            setAl(true)
-                        },5000)
-                        }
-            }    
-            return(res.json())
-        })
-        .then(data=>{
-            // console.log(data)
-        })
-        .catch(error=>console.error(error))
+            })
+        }
+
     }
 
     const handleInputChange = (v, type) =>{
@@ -77,9 +93,9 @@ const Addidea = (props) =>{
         console.log(v.target.value)
         if(v.target.value.length){
             if(type === "title"){
-                setTitle(v.target.value)
+                setTitle(v.target.value.trim())
             }else{
-                setDesc(v.target.value)
+                setDesc(v.target.value.trim())
             }
         }
     }
@@ -90,11 +106,11 @@ const Addidea = (props) =>{
             <Form name="IdeaForm">
                 <h2>Title</h2>
                 <Form.Item name='project_title' rules={[
-                    { required: true, message: 'You can not leave this epmty!' },
+                    { required: true, message: 'You can not leave this empty!' },
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{handleInputChange(v, 'title')}}/>
+                    <Input value={title} placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{handleInputChange(v, 'title')}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
@@ -103,7 +119,7 @@ const Addidea = (props) =>{
                     {max: 500, message:'max 500 characters only!'}
                     ]}
                 >
-                    <Input.TextArea rows={4}  onChange={(v)=>{handleInputChange(v, 'desc')}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
+                    <Input.TextArea rows={4} value={desc} onChange={(v)=>{handleInputChange(v, 'desc')}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>
                 <Form.Item name='tags' 
