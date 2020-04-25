@@ -128,7 +128,7 @@ class Home extends Component{
           </div>
           <div className="home-trending" style={{marginBottom:'50px', marginTop:'50px'}}>
             <h2 style={{color:'#2785FC', fontWeight:'bold', marginBottom:'40px'}}  data-aos='fade-up'>
-              Ideas made real
+              Ideas Made Real
             </h2>
             <div className="homecar-desc"  data-aos='fade-up'> 
               <p>A plethora of ideas were submitted in the past and we managed to convert them to successful projects which had the potential to help a lot of people around the globe.</p>
