@@ -212,7 +212,7 @@ class Nav extends Component{
                         width={window.innerWidth<400?(window.innerWidth):(400)}
                         zIndex="1001"
                     >
-                        <Addidea />
+                        <Addidea closeThis={this.onClose}/>
                 </Drawer>
 
             </div>
