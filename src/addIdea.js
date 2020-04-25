@@ -25,8 +25,13 @@ const Addidea = (props) =>{
     }
  
    const handleAddition = () => {
-       setTags([...tagz, val]);
-       setVal('')
+       if(!tagz.includes(val.trim())){
+        setTags([...tagz, val.trim()]);
+        setVal('')
+       }else{
+        setVal('')
+       }
+
     }
 
 
@@ -58,6 +63,8 @@ const Addidea = (props) =>{
                 if(res.status === 200){
                     setLoad(false)
                     props.alert.show("Idea submitted")
+                    setTitle('')
+                    setDesc('')
                 }else if(res.status===403){
                     setLoad(false)
                         if(al){
@@ -86,9 +93,9 @@ const Addidea = (props) =>{
         console.log(v.target.value)
         if(v.target.value.length){
             if(type === "title"){
-                setTitle(v.target.value)
+                setTitle(v.target.value.trim())
             }else{
-                setDesc(v.target.value)
+                setDesc(v.target.value.trim())
             }
         }
     }
@@ -103,7 +110,7 @@ const Addidea = (props) =>{
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{handleInputChange(v, 'title')}}/>
+                    <Input value={title} placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{handleInputChange(v, 'title')}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
@@ -112,7 +119,7 @@ const Addidea = (props) =>{
                     {max: 500, message:'max 500 characters only!'}
                     ]}
                 >
-                    <Input.TextArea rows={4}  onChange={(v)=>{handleInputChange(v, 'desc')}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
+                    <Input.TextArea rows={4} value={desc} onChange={(v)=>{handleInputChange(v, 'desc')}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>
                 <Form.Item name='tags' 
