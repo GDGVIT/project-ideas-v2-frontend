@@ -31,7 +31,16 @@ const Addidea = (props) =>{
        }else{
         setVal('')
        }
-
+    }
+    const handleSpaceAddition = (e) =>{
+        if(e.key===' '){
+            if(!tagz.includes(val.trim())){
+                setTags([...tagz, val.trim()]);
+                setVal('')
+               }else{
+                setVal('')
+               }
+        }
     }
 
 
@@ -63,8 +72,7 @@ const Addidea = (props) =>{
                 if(res.status === 200){
                     setLoad(false)
                     props.alert.show("Idea submitted")
-                    setTitle('')
-                    setDesc('')
+                    props.closeThis()
                 }else if(res.status===403){
                     setLoad(false)
                         if(al){
@@ -88,17 +96,17 @@ const Addidea = (props) =>{
 
     }
 
-    const handleInputChange = (v, type) =>{
-        v.persist()
-        console.log(v.target.value)
-        if(v.target.value.length){
-            if(type === "title"){
-                setTitle(v.target.value.trim())
-            }else{
-                setDesc(v.target.value.trim())
-            }
-        }
-    }
+    // const handleInputChange = (v, type) =>{
+    //     v.persist()
+    //     console.log(v.target.value)
+    //     if(v.target.value.length){
+    //         if(type === "title"){
+    //             setTitle(v.target.value.trim())
+    //         }else{
+    //             setDesc(v.target.value.trim())
+    //         }
+    //     }
+    // }
     return(
         <div className='formholder'>
         {loading && <Load2 />}
@@ -110,7 +118,7 @@ const Addidea = (props) =>{
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input value={title} placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{handleInputChange(v, 'title')}}/>
+                    <Input placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{setTitle(v.target.value.trim())}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
@@ -119,7 +127,7 @@ const Addidea = (props) =>{
                     {max: 500, message:'max 500 characters only!'}
                     ]}
                 >
-                    <Input.TextArea rows={4} value={desc} onChange={(v)=>{handleInputChange(v, 'desc')}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
+                    <Input.TextArea rows={4} onChange={(v)=>{setDesc(v.target.value.trim())}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>
                 <Form.Item name='tags' 
@@ -128,7 +136,7 @@ const Addidea = (props) =>{
                     {max: 50, message:'max 50 characters only!'}
                     ]}
                     >
-                    <Input placeholder='Mention tags for your project'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
+                    <Input placeholder='Mention tags for your project'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition} onKeyPress={handleSpaceAddition}/>
                     {tagz.map((tag, index)=>{
                         return(<Tag color="blue" key={tag} closable onClose={()=>{handleDelete(index)}}> {tag} </Tag>)
                     })}
