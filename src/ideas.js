@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Pagination} from 'antd'
-import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
+import { Card, Row, Col, Input, Pagination, Tag} from 'antd'
+import {CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
 
@@ -65,6 +65,7 @@ class Ideas extends Component{
         loading:false,
         total:data.total_pages
       })
+
       // console.log(this.state)
     })
     .catch(error=>{
@@ -200,6 +201,11 @@ class Ideas extends Component{
         }else{
           desc = data.project_description;
         }
+        let splitTags = data.tags.split(' ')
+        // console.log(splitTags)
+        let tags = splitTags.map(tag=>{
+          return(<Tag color="blue" key={tag}>{tag}</Tag>)
+        })
         return(
           <Card key={data.id} data-aos='fade-up'>
           <Row gutter={16}>
@@ -212,7 +218,7 @@ class Ideas extends Component{
             <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{desc}</p></div>
-              <div><p className="tagStyle">{data.tags}</p></div>
+              <div>{tags}</div>
               <div onClick={()=>{this.openSidea(data.id)}} className="sideaOpener" ><p className="commentAdd"><MessageOutlined style={{color:'#2785FC', marginRight:'5px'}} />discuss...</p></div>
             </Col>
           </Row>
