@@ -46,10 +46,11 @@ class Nav extends Component{
 
         if(localStorage.getItem('token')){
             this.setState({
-                isLoggedIn:true
+                isLoggedIn:true,
+                currentUser: localStorage.getItem('user')
             })
+            
         }
-
         firebase.auth().getRedirectResult().then((result)=> {
 
             if (result.credential) {
@@ -123,7 +124,7 @@ class Nav extends Component{
         }
       };
       logout=()=>{
-        fetch('https://project-ideas-v2-backend.herokuapp.com/app/logout/', {
+        fetch(process.env.REACT_APP_BASEURL+'app/logout/', {
             headers: new Headers({
                 'Authorization': localStorage.getItem("token")
                 }),
@@ -169,7 +170,7 @@ class Nav extends Component{
         var prolog = isLoggedIn?(
             <Menu.Item className="profile l" key="Profile">
                 <Dropdown overlay={this.lmenu}>
-                    <p>Hey, {localStorage.getItem("user")}</p>
+                    <p>Hey, {this.state.currentUser}</p>
                 </Dropdown>
             </Menu.Item>
         ):(

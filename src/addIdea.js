@@ -9,7 +9,8 @@ const Addidea = (props) =>{
 
     const [loading, setLoad] = useState(false)
     const [al, setAl] = useState(true)
-    const [tagz, setTags] = useState(["Sample", "sample2"])
+    const [tagz, setTags] = useState(["Sample"])
+    const [val, setVal] = useState('')
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
 
@@ -23,10 +24,9 @@ const Addidea = (props) =>{
 
     }
  
-   const handleAddition = (tag) => {
-       console.log(tag)
-       setTags([...tagz, tag.target.value]);
-       console.log(tagz)
+   const handleAddition = () => {
+       setTags([...tagz, val]);
+       setVal('')
     }
 
 
@@ -112,7 +112,7 @@ const Addidea = (props) =>{
                     {max: 50, message:'max 50 characters only!'}
                     ]}
                     >
-                    <Input placeholder='The category of idea, separated by a comma (if multiple).' onPressEnter={handleAddition}/>
+                    <Input placeholder='The category of idea, separated by a comma (if multiple).'  value={val} onChange={(val)=>setVal(val.target.value)} onPressEnter={handleAddition}/>
                     {tagz.map((tag, index)=>{
                         return(<Tag color="blue" key={tag} closable onClose={()=>{handleDelete(index)}}> {tag} </Tag>)
                     })}
