@@ -290,6 +290,9 @@ body{
     color: #2785FC;
     font-weight: 600;
   }
+  .card-cont>div>h3{
+    overflow-wrap: break-word;
+  }
   .uhh{
     text-align: center;
   }

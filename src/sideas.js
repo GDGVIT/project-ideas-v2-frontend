@@ -260,25 +260,6 @@ changePage=(page)=>{
       <div>
         <Nav active='ideas'/>
         <div className="main">
-          {/* <div className="countryCss">
-            <Select
-                showSearch
-                placeholder="Search for ideas"
-                optionFilterProp="children"
-                onChange={this.onChange}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-                onSearch={this.onSearch}
-                filterOption={(input, option) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-              <Option key='1' value='bandersnatch'>Bandersnatch</Option>
-              <Option key='2' value='bandersnatch'>Bandersnatch</Option>
-              <Option key='3' value='bandersnatch'>Bandersnatch</Option>
-              <Option key='4' value='bandersnatch'>Bandersnatch</Option>
-            </Select>
-          </div> */}
           <div className="IdeaCards">
             <Card key={this.state.idea.id}>
               <Row gutter={16} style={{marginBottom:"50px"}}>
