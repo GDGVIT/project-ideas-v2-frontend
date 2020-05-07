@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {Form, Input, Button, Tag} from 'antd'
 import { withAlert } from 'react-alert'
 import Load2 from './loading2' 
@@ -9,18 +9,12 @@ const Editidea = (props) =>{
 
     const [loading, setLoad] = useState(false)
     const [al, setAl] = useState(true)
-    const [tagz, setTags] = useState(["Sample"])
+    const [tagz, setTags] = useState(props.ideaData.tags.split(','))
     const [val, setVal] = useState('')
-    const [title, setTitle] = useState('')
-    const [desc, setDesc] = useState('')
+    const [title, setTitle] = useState(props.ideaData.project_title)
+    const [desc, setDesc] = useState(props.ideaData.project_description)
 
-
-        useEffect(() => {
-            console.log(props)
-            setTitle(props.ideaData.project_title)
-            setDesc(props.ideaData.project_description)
-            setTags(props.ideaData.tags.split(','))
-        }, [])
+    const textarea = useRef(null)
 
     const handleDelete = (i) => {
         // i.preventDefault()
@@ -31,6 +25,10 @@ const Editidea = (props) =>{
         console.log(tagz)
 
     }
+
+    useEffect(() => {
+        console.log(props)
+    }, [])
  
    const handleAddition = () => {
        if(!tagz.includes(val.trim())){
@@ -121,14 +119,19 @@ const Editidea = (props) =>{
         <div className='formholder'>
         {loading && <Load2 />}
         <h2>Edit Idea</h2>
-            <Form name="IdeaForm">
+            <Form name="IdeaForm"
+                initialValues={{
+                    'project-title': props.ideaData.project_title,
+                    'project_description': props.ideaData.project_description
+                }}
+                >
                 <h2>Title</h2>
                 <Form.Item name='project_title' rules={[
                     { required: true, message: 'You can not leave this empty!' },
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input defaultValue={props.ideaData.project_title} onChange={(v)=>{setTitle(v.target.value.trim())}}/>
+                    <Input onChange={(v)=>{setTitle(v.target.value.trim())}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
@@ -137,7 +140,7 @@ const Editidea = (props) =>{
                     {max: 500, message:'max 500 characters only!'}
                     ]}
                 >
-                    <Input.TextArea onChange={(v)=>{setDesc(v.target.value.trim())}} defaultValue={props.ideaData.project_description} />
+                    <Input.TextArea onChange={(v)=>{setDesc(v.target.value.trim())}} value={desc} />
                 </Form.Item>
                 <h2>Tags</h2>
                 <Form.Item name='tags' 
