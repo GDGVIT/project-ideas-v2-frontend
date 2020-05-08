@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Menu, Drawer, Dropdown} from 'antd'
+import {Menu, Drawer} from 'antd'
 import {NavLink, withRouter} from 'react-router-dom'
 import dsc from './assets/dsclogo.png';
 import Addidea from './addIdea';
@@ -8,6 +8,7 @@ import firebase from "firebase/app";
 import 'firebase/auth';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import glogo from './assets/glogo.png'
+import Profile from './profile';
 
 
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -23,8 +24,10 @@ class Nav extends Component{
             current: props.active,
             isLoggedIn: false,
             visible: false,
+            visibleProfile: false,
+            visibleEdit: false,
             loading: false,
-            currentUser: ''
+            currentUser: '',
         }
     }
     
@@ -152,13 +155,14 @@ class Nav extends Component{
       
       onClose = () =>{
           this.setState({
-                visible: false
+                visible: false,
+                visibleProfile: false,
+                visibleEdit: false
           })
       }
       logIn=()=>{
         firebase.auth().signInWithRedirect(provider);
       }
-
       lmenu = (
         <Menu>
           <Menu.Item onClick={this.logout}>
@@ -170,10 +174,8 @@ class Nav extends Component{
         const {loading} = this.state
         var {isLoggedIn} = this.state
         var prolog = isLoggedIn?(
-            <Menu.Item className="profile l" key="Profile">
-                <Dropdown overlay={this.lmenu}>
-                    <p>Hey, {this.state.currentUser}</p>
-                </Dropdown>
+            <Menu.Item className="profile l" key="Profile" onClick={()=>{this.setState({visibleProfile:true})}}>
+                    <p>{this.state.currentUser}</p>
             </Menu.Item>
         ):(
             <Menu.Item className="profile l" onClick={this.logIn} key="Profile">
@@ -213,6 +215,17 @@ class Nav extends Component{
                         zIndex="1001"
                     >
                         <Addidea closeThis={this.onClose}/>
+                </Drawer>
+                <Drawer
+                        placement="right"
+                        closable={true}
+                        onClose={this.onClose}
+                        visible={this.state.visibleProfile}
+                        width={window.innerWidth<400?(window.innerWidth):(400)}
+                        zIndex="1001"
+                        title="Profile"
+                    >
+                        <Profile closeThis={this.onClose} />
                 </Drawer>
 
             </div>
