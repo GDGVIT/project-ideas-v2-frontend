@@ -49,7 +49,8 @@ class Profile extends React.Component{
         }).then(response => response.json())
         .then(data=>{
             localStorage.removeItem("token");
-            this.setState({isLoggedIn:false})
+            localStorage.removeItem('user')
+            this.props.setlogin()
         })
         .catch(error=>{
             if(error){

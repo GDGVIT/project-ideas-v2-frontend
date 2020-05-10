@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Menu, Drawer} from 'antd'
+import {Menu, Drawer, message} from 'antd'
 import {NavLink, withRouter} from 'react-router-dom'
 import dsc from './assets/dsclogo.png';
 import Addidea from './addIdea';
@@ -88,14 +88,25 @@ class Nav extends Component{
                 .then(data =>{
                     // console.log(data)
                     if(data){
-                        this.setState({
-                            isLoggedIn:true,
-                            loading: false,
-                            currentUser: user.displayName
-                        })
-                        localStorage.setItem("token", 'Token '+data.User.token)
-                        localStorage.setItem("user", user.displayName)
+             
+                        if(data.User){
+                            localStorage.setItem("token", 'Token '+data.User.token)
+                            localStorage.setItem("user", user.displayName)
+                            this.setState({
+                                isLoggedIn: true,
+                                currentUser: user.displayName
+                            })
+                            message.info('Logged in')
+                        }else{
+                            message.info(data.error)
+                        }
+       
+                    }else{
+                        message.info("Something's wrong")
                     }
+                    this.setState({
+                        loading: false,
+                    })
                 })
                 .catch(error=>console.error(error))
             // ...
@@ -145,8 +156,15 @@ class Nav extends Component{
         })
 
 
-
       }
+      
+      setlogin=()=>{
+        this.setState({
+            isLoggedIn: false
+        })
+        window.location.reload()
+    }
+
       addIdea=()=>{
           this.setState({
               visible:true
@@ -225,7 +243,7 @@ class Nav extends Component{
                         zIndex="1001"
                         title="Profile"
                     >
-                        <Profile closeThis={this.onClose} />
+                        <Profile closeThis={this.onClose} setlogin={this.setlogin} />
                 </Drawer>
 
             </div>
