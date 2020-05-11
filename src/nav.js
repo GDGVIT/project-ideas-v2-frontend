@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Menu, Drawer} from 'antd'
+import {Menu, Drawer, message} from 'antd'
 import {NavLink, withRouter} from 'react-router-dom'
 import dsc from './assets/dsclogo.png';
 import Addidea from './addIdea';
@@ -58,16 +58,10 @@ class Nav extends Component{
         firebase.auth().getRedirectResult().then((result)=> {
 
             if (result.credential) {
-
                 this.setState({
                     loading:true
                 })
-    
-              // This gives you a Google Access Token. You can use it to access the Google API.
-                // var token = result.credential.accessToken;
-                // console.log(token)
                 var user = result.user;
-                // console.log(user)
                 let dataSent = {
                     "username":user.displayName,
                     "platform":0,
@@ -75,7 +69,6 @@ class Nav extends Component{
                     "platform_name":'google',
                     'social_user_id':user.uid,
                     "g-recaptcha-response": recaptok
-
                 }
                 fetch(process.env.REACT_APP_BASEURL+'app/login_signup/',{
                     method:'POST',
@@ -88,14 +81,40 @@ class Nav extends Component{
                 .then(data =>{
                     // console.log(data)
                     if(data){
-                        this.setState({
-                            isLoggedIn:true,
-                            loading: false,
-                            currentUser: user.displayName
-                        })
-                        localStorage.setItem("token", 'Token '+data.User.token)
-                        localStorage.setItem("user", user.displayName)
+             
+                        if(data.User){
+                            localStorage.setItem("token", 'Token '+data.User.token)
+                            localStorage.setItem("user", user.displayName)
+                            this.setState({
+                                isLoggedIn: true,
+                                currentUser: user.displayName
+                            })
+                            message.info('Logged in')
+                            if(localStorage.getItem('server')){
+                                const regDevBod = {
+                                    "registration_id":localStorage.getItem('server')
+                                }
+                                fetch(`${process.env.REACT_APP_BASEURL}app/register_device`,{
+                                    method:'POST',
+                                    headers: new Headers({
+                                        "Authorization": localStorage.getItem('token')
+                                    }),
+                                    body: JSON.stringify(regDevBod)
+                                })
+                                .then(res=>res.json())
+                                .catch(err=>console.error(err))
+                            }
+
+                        }else{
+                            message.info(data.error)
+                        }
+       
+                    }else{
+                        message.info("Something's wrong")
                     }
+                    this.setState({
+                        loading: false,
+                    })
                 })
                 .catch(error=>console.error(error))
             // ...
@@ -145,8 +164,15 @@ class Nav extends Component{
         })
 
 
-
       }
+      
+      setlogin=()=>{
+        this.setState({
+            isLoggedIn: false
+        })
+        window.location.reload()
+    }
+
       addIdea=()=>{
           this.setState({
               visible:true
@@ -225,7 +251,7 @@ class Nav extends Component{
                         zIndex="1001"
                         title="Profile"
                     >
-                        <Profile closeThis={this.onClose} />
+                        <Profile closeThis={this.onClose} setlogin={this.setlogin} />
                 </Drawer>
 
             </div>

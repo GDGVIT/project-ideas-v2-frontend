@@ -14,7 +14,6 @@ const Editidea = (props) =>{
     const [title, setTitle] = useState(props.ideaData.project_title)
     const [desc, setDesc] = useState(props.ideaData.project_description)
 
-    const textarea = useRef(null)
 
     const handleDelete = (i) => {
         // i.preventDefault()
@@ -131,7 +130,7 @@ const Editidea = (props) =>{
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input onChange={(v)=>{setTitle(v.target.value.trim())}}/>
+                    <Input defaultValue={props.ideaData.project_title} onChange={(v)=>{setTitle(v.target.value.trim())}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
