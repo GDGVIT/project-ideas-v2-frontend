@@ -58,16 +58,10 @@ class Nav extends Component{
         firebase.auth().getRedirectResult().then((result)=> {
 
             if (result.credential) {
-
                 this.setState({
                     loading:true
                 })
-    
-              // This gives you a Google Access Token. You can use it to access the Google API.
-                // var token = result.credential.accessToken;
-                // console.log(token)
                 var user = result.user;
-                // console.log(user)
                 let dataSent = {
                     "username":user.displayName,
                     "platform":0,
@@ -75,7 +69,6 @@ class Nav extends Component{
                     "platform_name":'google',
                     'social_user_id':user.uid,
                     "g-recaptcha-response": recaptok
-
                 }
                 fetch(process.env.REACT_APP_BASEURL+'app/login_signup/',{
                     method:'POST',
@@ -97,6 +90,21 @@ class Nav extends Component{
                                 currentUser: user.displayName
                             })
                             message.info('Logged in')
+                            if(localStorage.getItem('server')){
+                                const regDevBod = {
+                                    "registration_id":localStorage.getItem('server')
+                                }
+                                fetch(`${process.env.REACT_APP_BASEURL}app/register_device`,{
+                                    method:'POST',
+                                    headers: new Headers({
+                                        "Authorization": localStorage.getItem('token')
+                                    }),
+                                    body: JSON.stringify(regDevBod)
+                                })
+                                .then(res=>res.json())
+                                .catch(err=>console.error(err))
+                            }
+
                         }else{
                             message.info(data.error)
                         }

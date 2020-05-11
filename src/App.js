@@ -15,8 +15,9 @@ import firebaseConfig from './firebase.config';
 import { loadReCaptcha } from 'react-recaptcha-v3'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import {messaging} from './init-fcm'
 
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 
 const options = {
   // you can also just use 'bottom center'
@@ -38,6 +39,16 @@ class App extends Component{
       }
   }
   componentDidMount() {
+    messaging.requestPermission()
+    .then(async function() {
+      const token = await messaging.getToken();
+      localStorage.setItem('server', token)
+    })
+    .catch(function(err) {
+      console.log("Unable to get permission to notify.", err);
+    });
+    navigator.serviceWorker.addEventListener("message", (message) => console.log(message))
+
     loadReCaptcha("6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz");
     AOS.init()
   }
