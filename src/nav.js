@@ -97,7 +97,8 @@ class Nav extends Component{
                                 fetch(`${process.env.REACT_APP_BASEURL}app/register_device`,{
                                     method:'POST',
                                     headers: new Headers({
-                                        "Authorization": localStorage.getItem('token')
+                                        "Authorization": localStorage.getItem('token'),
+                                        "Content-Type":"application/json"
                                     }),
                                     body: JSON.stringify(regDevBod)
                                 })
