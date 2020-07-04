@@ -1,7 +1,9 @@
 import React from 'react'
-import {message, Card, Drawer} from 'antd'
+import {message, Card, Drawer, Tabs} from 'antd'
 import {withRouter} from 'react-router-dom'
 import Editidea from './edit'
+
+const { TabPane } = Tabs;
 
 class Profile extends React.Component{
     state={
@@ -10,7 +12,26 @@ class Profile extends React.Component{
         anyIdea: false,
         mssg: '',
         visibleEdit: false,
-        lastEditIdea : {}
+        lastEditIdea : {},
+        coms:[]
+    }
+
+    getCommentData=(othData)=>{
+      fetch(`${process.env.REACT_APP_BASEURL}app/user_comments/`, {
+        headers: new Headers({
+          'Authorization':localStorage.getItem('token')
+        }) 
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        if(data.comments && data.comments.length){
+          this.setState({
+            coms: data.comments
+          })
+        }
+
+      })
     }
 
     componentDidMount(){
@@ -22,10 +43,14 @@ class Profile extends React.Component{
           })
           .then(res=>res.json())
           .then(data=>{
-                console.log(data)
-                this.setState({
-                ideas:data.message,
-                })
+                // console.log(data)
+                if(data.message && data.message.length){
+                  this.setState({
+                    ideas:data.message,
+                    })
+                }
+       
+              this.getCommentData(data.message)
           })
           .catch(error=>{
             if(error){
@@ -35,6 +60,8 @@ class Profile extends React.Component{
               })
             }
           })
+
+
     }
     onClose=()=>{
         this.setState({
@@ -108,8 +135,12 @@ class Profile extends React.Component{
           })
       }
 
+      handleChange=(e)=>{
+        console.log(e)
+      }
+
     render(){
-        const {ideas, mssg}=this.state
+        const {ideas, mssg, coms}=this.state
         var dataDisp = ideas.length?(
           ideas.map(data=>{
             let desc=''
@@ -136,14 +167,37 @@ class Profile extends React.Component{
             )
           })
         ):(<div style={{textAlign:"center"}}>{mssg}</div>)
+
+        let theComs = coms.length?(coms.map(data=>{
+          let desc=''
+            if(data.body.length>=170){
+              desc = data.body.substring(0,170)+'...'
+            }else{
+              desc = data.body;
+            }
+          return(
+            <Card key={data.id} style={{cursor:'pointer'}} onClick={()=>{this.props.history.push(`/ideas/${data.idea_id}`)}}>
+              <h3>
+                {data.idea_title}
+              </h3>
+              <p className="idea-desc">{desc}</p>
+          </Card>
+          )
+        })):(<div>Seems like you haven't interacted much with people here :/</div>)
         return(
             <div className="profile-par">
                 <div className="logout-button">
                     <button onClick={this.logout}>Logout</button>
                 </div>
                 <div className="profile-ideas">
-                    <h2>Your ideas</h2>
-                    {dataDisp}
+                    <Tabs defaultActiveKey="1" onChange={this.handleChange} centered={true}>
+                        <TabPane tab="Your Ideas" key="1">
+                          {dataDisp}
+                        </TabPane>
+                        <TabPane tab="Your Comments" key="2">
+                          {theComs}
+                        </TabPane>
+                    </Tabs>
                 </div>
                 <Drawer
                         placement="right"
@@ -153,7 +207,8 @@ class Profile extends React.Component{
                         width={window.innerWidth<400?(window.innerWidth):(400)}
                         zIndex="2001"
                     >
-                        <Editidea closeThis={this.onClose} ideaData={this.state.lastEditIdea}/>
+                      <Editidea closeThis={this.onClose} ideaData={this.state.lastEditIdea}/>
+
                 </Drawer>
             </div>
         )
