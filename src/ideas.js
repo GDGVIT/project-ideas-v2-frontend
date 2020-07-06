@@ -19,7 +19,9 @@ class Ideas extends Component{
           total:1,
           current:1,
           search:null,
-          al:true
+          al:true,
+          def:1,
+          pagKey:0
         }
     }
 
@@ -54,29 +56,36 @@ class Ideas extends Component{
     this.setState({
       loading:true
     })
-    fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
-      method:'GET'
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      // console.log(data)
-      this.setState({
-        cards:data.message,
-        loading:false,
-        total:data.total_pages
-      })
 
-      // console.log(this.state)
-    })
-    .catch(error=>{
-      if(error){
-        console.log(error)
-        this.setState({
-          mssg:"Seems like there aren't any published ideas yet :/",
-          loading:false
-        })
-      }
-    })
+    if(sessionStorage.getItem('lastActivePage')){
+      this.setState({
+        def:parseInt(sessionStorage.getItem('lastActivePage')),
+        pagKey:this.state.pagKey+1
+      })
+      this.changePage(sessionStorage.getItem('lastActivePage'))
+    }else{
+      fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+          this.setState({
+            cards:data.message,
+            loading:false,
+            total:data.total_pages
+          })
+      })
+      .catch(error=>{
+        if(error){
+          console.log(error)
+          this.setState({
+            mssg:"Seems like there aren't any published ideas yet :/",
+            loading:false
+          })
+        }
+      })
+    }
+    
   }
   
   addVote=(vote, id, index)=>{
@@ -135,6 +144,8 @@ class Ideas extends Component{
     // this.setState({
     //   current:page
     // })
+    sessionStorage.setItem('lastActivePage',page)
+
     this.setState({
       loading:true
     })
@@ -169,13 +180,13 @@ class Ideas extends Component{
       })
       .then(res=>res.json())
       .then(data=>{
-        // console.log(data)
+        console.log(data)
         this.setState({
-          cards:data.message
-        })
-        this.setState({
+          cards:data.message,
+          total: data.total_pages,
           loading:false
         })
+ 
       })
       .catch(error=>{
         if(error){
@@ -204,7 +215,9 @@ class Ideas extends Component{
         let splitTags = data.tags.split(',')
         // console.log(splitTags)
         let tags = splitTags.map(tag=>{
-          return(<Tag color="blue" key={tag}>{tag}</Tag>)
+          if(tag){
+            return(<Tag color="blue" key={tag}>{tag}</Tag>)
+          }
         })
         return(
           <Card key={data.id} data-aos='fade-up'>
@@ -238,7 +251,7 @@ class Ideas extends Component{
 
           </div>
           <div className="paginationDiv">
-          <Pagination defaultCurrent={1} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
+            <Pagination  key={this.state.pagKey} defaultCurrent={this.state.def} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
           </div>
         </div>
       </div>)
