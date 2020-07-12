@@ -94,7 +94,8 @@ class Nav extends Component{
                                 const regDevBod = {
                                     "registration_id":localStorage.getItem('server')
                                 }
-                                fetch(`${process.env.REACT_APP_BASEURL}app/register_device`,{
+
+                                fetch(`${process.env.REACT_APP_BASEURL}app/register_device/`,{
                                     method:'POST',
                                     headers: new Headers({
                                         "Authorization": localStorage.getItem('token'),
@@ -107,6 +108,7 @@ class Nav extends Component{
                                     console.log(data)
                                 })
                                 .catch(err=>console.error(err))
+
                             }
 
                         }else{
