@@ -15,9 +15,10 @@ import Adminpanel from './admin'
 import { loadReCaptcha } from 'react-recaptcha-v3'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import {messaging} from './init-fcm'
+import { initializeFirebase, askForPermissioToReceiveNotifications } from './push-notifications';
 
 // firebase.initializeApp(firebaseConfig);
+initializeFirebase();
 
 const options = {
   // you can also just use 'bottom center'
@@ -38,16 +39,22 @@ class App extends Component{
         isLoggedIn: false
       }
   }
-  componentDidMount() {
-    messaging.requestPermission()
-    .then(async function() {
-      const token = await messaging.getToken();
-      localStorage.setItem('server', token)
+  async componentDidMount() {
+
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./firebase-messaging-sw.js")
+    .then(function(registration) {
+      console.log("Registration successful, scope is:", registration.scope);
     })
     .catch(function(err) {
-      console.log("Unable to get permission to notify.", err);
+      console.log("Service worker registration failed, error:", err);
     });
-    navigator.serviceWorker.addEventListener("message", (message) => console.log(message))
+}
+if(!localStorage.getItem("server")){
+  askForPermissioToReceiveNotifications();
+}
 
     loadReCaptcha("6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz");
     AOS.init()
