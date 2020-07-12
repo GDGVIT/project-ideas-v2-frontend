@@ -10,8 +10,8 @@ import Ideas from './ideas'
 import Sidea from './sideas'
 import Adminlogin from './adminlogin'
 import Adminpanel from './admin'
-import firebase from "firebase/app";
-import firebaseConfig from './firebase.config';
+// import firebase from "firebase/app";
+// import firebaseConfig from './firebase.config';
 import { loadReCaptcha } from 'react-recaptcha-v3'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
