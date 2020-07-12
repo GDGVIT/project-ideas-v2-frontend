@@ -217,6 +217,8 @@ class Ideas extends Component{
         let tags = splitTags.map(tag=>{
           if(tag){
             return(<Tag color="blue" key={tag}>{tag}</Tag>)
+          }else{
+            return <span></span>
           }
         })
         return(

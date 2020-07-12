@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState} from 'react'
 import {Form, Input, Button, Tag} from 'antd'
 import { withAlert } from 'react-alert'
 import Load2 from './loading2' 
@@ -24,10 +24,6 @@ const Editidea = (props) =>{
         console.log(tagz)
 
     }
-
-    useEffect(() => {
-        console.log(props)
-    }, [])
  
    const handleAddition = () => {
        if(!tagz.includes(val.trim())){

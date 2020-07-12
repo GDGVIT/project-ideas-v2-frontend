@@ -103,6 +103,9 @@ class Nav extends Component{
                                     body: JSON.stringify(regDevBod)
                                 })
                                 .then(res=>res.json())
+                                .then(data=>{
+                                    console.log(data)
+                                })
                                 .catch(err=>console.error(err))
                             }
 
