@@ -33,4 +33,5 @@ messaging.setBackgroundMessageHandler(function(payload) {
 self.addEventListener('notificationclick', function(event) {
   // do what you want
   // ...
+  window.location='https://ideas.dscvit.com'
 });
