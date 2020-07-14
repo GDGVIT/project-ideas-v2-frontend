@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Form, Pagination, Tag} from 'antd'
+import { Card, Row, Col, Input, Form, Pagination, Tag, Avatar} from 'antd'
 import{CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
@@ -231,7 +231,7 @@ changePage=(page)=>{
             <Col span={1} className="vote">
             </Col>
             <Col span={22} className='card-cont '>
-              <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'900'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
+              <div>  <Avatar size='small' style={{backgroundColor:'rgb(39,133,252,0.3)'}} >{data.username[0]}</Avatar> <span style={{padding:'0px 20px 15px 0px', fontWeight:'900'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
               <div><h3>{data.body}</h3></div>
               <div> 
           {reps}
@@ -254,7 +254,11 @@ changePage=(page)=>{
       let splitTags = idea.tags?(idea.tags.split(',')):([""])
       console.log(splitTags)
       let tags = splitTags.map(tag=>{
-        return(<Tag color="blue" key={tag}>{tag}</Tag>)
+        if(tag){
+          return(<Tag color="blue" key={tag}>{tag}</Tag>)
+        }else{
+          return(<span></span>)
+        }
       })
       return(
       <div>
@@ -262,7 +266,7 @@ changePage=(page)=>{
         <div className="main">
           <div className="IdeaCards">
             <Card key={this.state.idea.id}>
-              <Row gutter={16} style={{marginBottom:"50px"}}>
+              <Row gutter={16} style={{marginBottom:"10px"}}>
                 <Col span={1} className="vote">
                   <CaretUpFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(1, this.state.idea.id)}} />
                   <p>{this.state.idea.votes}</p>
