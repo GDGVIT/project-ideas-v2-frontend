@@ -292,6 +292,9 @@ body{
   }
   .card-cont>div>h3{
     overflow-wrap: break-word;
+    line-height: 17px;
+    font-size: 13px;
+    color: #393939;
   }
   .uhh{
     text-align: center;

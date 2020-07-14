@@ -218,7 +218,7 @@ class Ideas extends Component{
           if(tag){
             return(<Tag color="blue" key={tag}>{tag}</Tag>)
           }else{
-            return <span></span>
+            return (<span></span>)
           }
         })
         return(
@@ -250,10 +250,9 @@ class Ideas extends Component{
           <div className="IdeaCards">
           {loading && <Load2 />}
             {ideaz}
-
           </div>
           <div className="paginationDiv">
-            <Pagination  key={this.state.pagKey} defaultCurrent={this.state.def} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
+            <Pagination showQuickJumper={false} showSizeChanger={false} key={this.state.pagKey} defaultCurrent={this.state.def} pageSize={5} total={this.state.total*5} onChange={(page)=>this.changePage(page)}/>
           </div>
         </div>
       </div>)
