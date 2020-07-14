@@ -145,7 +145,7 @@ class Home extends Component{
               </Card>
               <Card data-aos="fade-left" key={2}>
                 <h3>
-                  Screenshots App
+                  Easy Gists
                 </h3>
                 <p>Easy Gists allows you to Create, Update, Delete, and View all your GitHub Gists straight from your phone. It features a Code View which allows you to view the code with syntax highlighting in a formatted way. The gists will be available offline for easy access during low or no internet connection.</p>
                 <p style={{color:"#2785FC", marginTop:'20px'}}>

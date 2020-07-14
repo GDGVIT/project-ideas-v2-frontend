@@ -84,7 +84,7 @@ body{
   }
 
   .trending-cards{
-    height: 370px;
+    height: 400px;
     width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
@@ -532,9 +532,8 @@ color: #fff;
   height: 450px;
   display: flex;
 }
-/* .imr-cards>.ant-card{
+.imr-cards>.ant-card{
   width: 350px;
-  max-height: 340px;
-  overflow-y: auto;
+  min-width: 350px;
   display: block;
-} */
+}
