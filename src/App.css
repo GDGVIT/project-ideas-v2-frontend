@@ -91,9 +91,9 @@ body{
     white-space: nowrap;
     scroll-behavior: smooth;
   }
-  .trending-cards::-webkit-scrollbar{
+  /* .trending-cards::-webkit-scrollbar{
     display: none;
-  }
+  } */
   .trending-cards .ant-card{
     height: 340px;
     width: 300px;
@@ -528,3 +528,13 @@ color: #fff;
   border-radius: 10px;  
 }
 
+.imr-cards{
+  height: 450px;
+  display: flex;
+}
+/* .imr-cards>.ant-card{
+  width: 350px;
+  max-height: 340px;
+  overflow-y: auto;
+  display: block;
+} */

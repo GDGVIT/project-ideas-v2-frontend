@@ -133,32 +133,35 @@ class Home extends Component{
             <div className="homecar-desc"  data-aos='fade-up'> 
               <p>A plethora of ideas were submitted in the past and we managed to convert them to successful projects which had the potential to help a lot of people around the globe.</p>
             </div>
-          <div className="trending-cards">
-              <Card data-aos="fade-left">
+          <div className="trending-cards imr-cards">
+              <Card data-aos="fade-left" key={1}>
                 <h3>
-                  Idea
+                  Event's App
                 </h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                <p>Ever missed out on important event dates that you wished to participate in but forgot to do so? Bother no more as we bring to you ‘Events’, an app that not only notifies you about the latest upcoming activities and events but also enables you to add important dates straight to your Google calendar!</p>
                 <p style={{color:"#2785FC", marginTop:'20px'}}>
-                  123 Upvotes
+                The app is now available on PlayStore as well! Try it out now!
                 </p>
               </Card>
-              <Card data-aos="fade-left">
+              <Card data-aos="fade-left" key={2}>
                 <h3>
-                  Idea
+                  Screenshots App
                 </h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                <p>Easy Gists allows you to Create, Update, Delete, and View all your GitHub Gists straight from your phone. It features a Code View which allows you to view the code with syntax highlighting in a formatted way. The gists will be available offline for easy access during low or no internet connection.</p>
                 <p style={{color:"#2785FC", marginTop:'20px'}}>
-                  123 Upvotes
+                <a href="http://bit.ly/DSCGistsApp" target='_blank' rel='noopener noreferrer'>Check it out here</a>
                 </p>
               </Card>
-              <Card data-aos="fade-left">
+              <Card data-aos="fade-left" key={3}>
                 <h3>
-                  Idea
+                  Handwriting Parser
                 </h3>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                <p>How often have you spent all your time and effort in typing out an assignment only to find out later that it was supposed to be hand-written? Answering all your prayers, we present to you Handwriter, an easy to use app that lets you convert any typed text directly to a hand-written document at the press of a button.
+
+Visit the link to test it out! 
+</p>
                 <p style={{color:"#2785FC", marginTop:'20px'}}>
-                  123 Upvotes
+                  <a href="https://handwriter.dscvit.com/" target='_blank' rel='noopener noreferrer'>Check it out here</a>
                 </p>
               </Card>
           </div>
