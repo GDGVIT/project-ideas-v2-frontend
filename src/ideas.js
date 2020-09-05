@@ -275,6 +275,7 @@ class Ideas extends Component{
       var {cards} = this.state;
       let ideaz = cards.length>0?(cards.map((data, index)=>{
         //  console.log(index)
+
         let theDate = data.date_time.substring(0,10);
         let desc
         if(data.project_description.length>=250){
@@ -288,7 +289,7 @@ class Ideas extends Component{
           if(tag){
             return(<Tag color="blue" key={tag}>{tag}</Tag>)
           }else{
-            return (<span></span>)
+            return ('')
           }
         })
         return(
@@ -300,7 +301,11 @@ class Ideas extends Component{
               <CaretDownFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(-1, data.id, index)}} />
             </Col>
             <Col span={22} className='card-cont'>
-            <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
+              <div>
+                <span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span>
+                <span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span>
+                {data.is_completed && <Tag color='green'>Completed</Tag>}
+              </div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{desc}</p></div>
               <div>{tags}</div>
