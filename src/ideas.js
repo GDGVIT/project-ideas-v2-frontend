@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Pagination, Tag} from 'antd'
+import { Card, Row, Col, Input, Pagination, Tag , Select, DatePicker} from 'antd'
 import {CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
 
-// const { Option } = Select;
+const { Option } = Select;
 
 class Ideas extends Component{
     constructor(props) {
@@ -21,34 +21,103 @@ class Ideas extends Component{
           search:null,
           al:true,
           def:1,
-          pagKey:0
+          pagKey:0,
+          filter:'', //sort options are mvotes, latest and by date
+          tag:'',
+          date:''
         }
     }
 
     // SELECT CSS
   onChange=(e)=>{
-    e.persist()
-    // console.log(e)
     this.setState({
-      search: e.target.value
+      search: e
     })
-  fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+e.target.value+'&offset=0',{
-      method:'GET'
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      if(!data){
-        this.props.alert.show("Couldn't find any such Idea")
-      }else{
-        this.setState({
-          cards:data.message,
-          total: data.total_pages
-        
-        })
+
+    let url = process.env.REACT_APP_BASEURL+'app/search_published_ideas/'
+    let flag = 0
+    if(e) {
+      url += ('?text='+e)
+      flag = 1
+    }
+    if(this.state.tag) {
+      if(flag) {
+        url += ('&tag='+this.state.tag)
+      }else {
+        url += ('?tag='+this.state.tag)
+        flag = 1
       }
-    })
-    .catch(error=>console.error(error))
+    }
+    if(this.state.filter) {
+      if(flag) {
+        if(this.state.filter==='new' || this.state.filter==='old'){
+          url += ('&sort='+this.state.filter)
+        }else if(this.state.filter==='desc'){
+          url += ('&votes='+this.state.filter)
+        }
+      }else {
+        if(this.state.filter==='new' || this.state.filter==='old'){
+          url += ('?sort='+this.state.filter)
+        }else if(this.state.filter==='desc'){
+          url += ('?votes='+this.state.filter)
+        }
+        flag = 1
+      }
+    }
+    if(this.state.date) {
+      if(flag) {
+        url += ('&date='+this.state.date)
+      }else{
+        url += ('?date='+this.state.date)
+      }
+    }
+
+    console.log(url)
+
+    fetch(url+'&offset=0',{
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        if(!data){
+          this.props.alert.show("Couldn't find any such Idea")
+        }else{
+          this.setState({
+            cards:data.message,
+            total: data.total_pages
+          
+          })
+        }
+      })
+      .catch(error=>console.error(error))
   }
+
+
+  handleFilter = (e) => {
+    console.log(e)
+    this.setState({
+      filter:e
+    }, () => {
+      this.onChange(this.state.search)
+    })
+
+
+  }
+
+    onChangeTag = (e) => {
+      console.log(e.target.value)
+      this.setState({
+        tag:e.target.value
+      }, () => {
+        this.onChange(this.state.search)
+      })
+    }
+
+    handleDate = (date, dateString) => {
+      this.setState({
+        date: dateString
+      }, ()=>{this.onChange(this.state.search)})
+    }
 
   componentDidMount() {
     // console.log(document.querySelector('.main').offsetHeight)
@@ -62,7 +131,7 @@ class Ideas extends Component{
         def:parseInt(sessionStorage.getItem('lastActivePage')),
         pagKey:this.state.pagKey+1
       })
-      this.changePage(sessionStorage.getItem('lastActivePage'))
+      this.changePage(parseInt(sessionStorage.getItem('lastActivePage')))
     }else{
       fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
         method:'GET'
@@ -200,6 +269,7 @@ class Ideas extends Component{
     }
 
   }
+
     render(){
       const {loading} = this.state
       var {cards} = this.state;
@@ -245,7 +315,22 @@ class Ideas extends Component{
         <Nav active='ideas'/>
         <div className="main">
           <div className="countryCss">
-            <Input placeholder="Search for ideas" onChange={this.onChange}/>
+            <Input className="search-by-text" placeholder="Search for ideas" onChange={(e)=>{this.onChange(e.target.value)}}/>
+            <Input className="search-by-tag" placeholder="Search by tag" onChange={this.onChangeTag}/>
+          </div>
+          <div className="countryCss filterCss" style={{marginTop:'20px'}}>
+            <div>
+              <span>Show ideas from: </span>
+              <DatePicker onChange={this.handleDate} />
+            </div>
+            <div>
+              <span>Sort by: </span>
+              <Select defaultValue="Most Votes" style={{ width: 120 }} onChange={this.handleFilter}>
+                <Option value="desc">Most votes</Option>
+                <Option value="new">Latest</Option>
+                <Option value="old">Oldest</Option>
+              </Select>
+            </div>
           </div>
           <div className="IdeaCards">
           {loading && <Load2 />}

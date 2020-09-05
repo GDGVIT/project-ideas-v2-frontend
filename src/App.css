@@ -177,7 +177,7 @@ body{
       float: left;
   }
   .navz img{
-    width: 125px;
+    width: 165px;
     height: auto;
   }
 
@@ -214,20 +214,54 @@ body{
   margin-top: 60px;
 }
   .countryCss{
-    text-align: center;
     margin-bottom: 40px;
     width: 90%;
     max-width: 700px;
     margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
   }
-  .countryCss .ant-input{
-      width: 80%;
+  .countryCss .search-by-text{
+      width: 70%;
       margin: auto auto;
       box-shadow: 0px 2px 3px lightgray;
       border: none;
       border-radius: 14px;
       height: 74px;
   }
+  .countryCss .search-by-tag {
+    width: 20%;
+    margin: auto auto;
+    box-shadow: 0px 2px 3px lightgray;
+    border: none;
+    border-radius: 14px;
+    height: 74px;
+  }
+  .countryCss .ant-picker, .countryCss .ant-select-selector {
+      box-shadow: 0px 2px 3px lightgray;
+      border: none !important;
+      border-radius: 6px !important;
+  }
+  
+  @media(max-width:576px) {
+    .countryCss {
+      flex-direction: column;
+    }
+    .countryCss>* {
+      margin-bottom: 20px;
+    }
+    .countryCss .search-by-tag {
+      width: 70%;
+      margin-top: 20px;
+      height: 50px;
+    }
+    .countryCss .search-by-text {
+      height: 50px;
+      width: 80%;
+    }
+  }
+
   /* .countryCss .ant-select .ant-select-selector{
       border-radius: 14px;
       height: 100%;
