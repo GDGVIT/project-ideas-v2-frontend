@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Pagination, Tag} from 'antd'
+import { Card, Row, Col, Input, Pagination, Tag , Select, DatePicker, message} from 'antd'
 import {CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
 
-// const { Option } = Select;
+const { Option } = Select;
+var alertFlag = true;
 
 class Ideas extends Component{
     constructor(props) {
@@ -21,49 +22,128 @@ class Ideas extends Component{
           search:null,
           al:true,
           def:1,
-          pagKey:0
+          pagKey:0,
+          filter:'', //sort options are mvotes, latest and by date
+          tag:'',
+          date:''
         }
     }
 
     // SELECT CSS
-  onChange=(e)=>{
-    e.persist()
-    // console.log(e)
+  onChange=(e, p)=>{
     this.setState({
-      search: e.target.value
+      search: e
     })
-  fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+e.target.value+'&offset=0',{
-      method:'GET'
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      if(!data){
-        this.props.alert.show("Couldn't find any such Idea")
-      }else{
-        this.setState({
-          cards:data.message,
-          total: data.total_pages
-        
-        })
+
+    var page = 0
+
+    if(p){
+      page = p-1
+    }
+
+    let url = process.env.REACT_APP_BASEURL+'app/search_published_ideas/'
+    let flag = 0
+    if(e) {
+      url += ('?text='+e)
+      flag = 1
+    }
+    if(this.state.tag) {
+      if(flag) {
+        url += ('&tag='+this.state.tag)
+      }else {
+        url += ('?tag='+this.state.tag)
+        flag = 1
       }
+    }
+    if(this.state.filter) {
+      if(flag) {
+        if(this.state.filter==='new' || this.state.filter==='old'){
+          url += ('&sort='+this.state.filter)
+        }else if(this.state.filter==='desc'){
+          url += ('&votes='+this.state.filter)
+        }
+      }else {
+        if(this.state.filter==='new' || this.state.filter==='old'){
+          url += ('?sort='+this.state.filter)
+        }else if(this.state.filter==='desc'){
+          url += ('?votes='+this.state.filter)
+        }
+        flag = 1
+      }
+    }
+    if(this.state.date) {
+      if(flag) {
+        url += ('&date='+this.state.date)
+      }else{
+        url += ('?date='+this.state.date)
+      }
+    }
+
+    if(url !== process.env.REACT_APP_BASEURL+'app/search_published_ideas/'){
+      fetch(url+'&offset='+page,{
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        if(data){
+          this.setState({
+            cards:data.message,
+            total: data.total_pages
+          })
+        }
+      })
+      .catch(error=>{
+        if(error) {
+          if(alertFlag){
+            message.error("No such ideas found",3)
+            alertFlag = false
+            setTimeout(()=>{
+              alertFlag = true
+            }, 3000)
+          }
+          this.setState({
+            cards:[],
+            total:0 
+          })
+        }
+      })
+    }else {
+      this.getIdeas()
+    }
+    this.setState({
+      loading:false
     })
-    .catch(error=>console.error(error))
   }
 
-  componentDidMount() {
-    // console.log(document.querySelector('.main').offsetHeight)
-    // console.log(window.innerHeight)
+
+  handleFilter = (e) => {
+    console.log(e)
     this.setState({
-      loading:true
+      filter:e
+    }, () => {
+      this.onChange(this.state.search)
     })
 
-    if(sessionStorage.getItem('lastActivePage')){
+
+  }
+
+    onChangeTag = (e) => {
+      console.log(e.target.value)
       this.setState({
-        def:parseInt(sessionStorage.getItem('lastActivePage')),
-        pagKey:this.state.pagKey+1
+        tag:e.target.value
+      }, () => {
+        this.onChange(this.state.search)
       })
-      this.changePage(sessionStorage.getItem('lastActivePage'))
-    }else{
+    }
+
+    handleDate = (date, dateString) => {
+      this.setState({
+        date: dateString
+      }, ()=>{this.onChange(this.state.search)})
+    }
+
+    getIdeas = () => {
       fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
         method:'GET'
       })
@@ -84,6 +164,23 @@ class Ideas extends Component{
           })
         }
       })
+    }
+
+  componentDidMount() {
+    // console.log(document.querySelector('.main').offsetHeight)
+    // console.log(window.innerHeight)
+    this.setState({
+      loading:true
+    })
+
+    if(sessionStorage.getItem('lastActivePage')){
+      this.setState({
+        def:parseInt(sessionStorage.getItem('lastActivePage')),
+        pagKey:this.state.pagKey+1
+      })
+      this.changePage(parseInt(sessionStorage.getItem('lastActivePage')))
+    }else{
+      this.getIdeas()
     }
     
   }
@@ -149,31 +246,33 @@ class Ideas extends Component{
     this.setState({
       loading:true
     })
-    if(this.state.search){
-      fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+this.state.search+'&offset='+(page-1),{
-        method:'GET'
-      })
-      .then(res=>res.json())
-      .then(data=>{
-        if(!data){
-          this.props.alert.show("Couldn't find any such Idea")
-        }else{
-          this.setState({
-            cards:data.message,
-            total: data.total_pages,
-              loading:false
-          })
-        }
-      })
-      .catch(error=>{
-        if(error){
-          console.log(error)
-          this.setState({
-            mssg:"Seems like there aren't any published ideas yet :/",
-            loading:false
-          })
-        }
-      })
+    if(this.state.search || this.state.filter || this.state.tag || this.state.date){
+
+      this.onChange(this.state.search, page)
+      // fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+this.state.search+'&offset='+(page-1),{
+      //   method:'GET'
+      // })
+      // .then(res=>res.json())
+      // .then(data=>{
+      //   if(!data){
+      //     this.props.alert.show("Couldn't find any such Idea")
+      //   }else{
+      //     this.setState({
+      //       cards:data.message,
+      //       total: data.total_pages,
+      //         loading:false
+      //     })
+      //   }
+      // })
+      // .catch(error=>{
+      //   if(error){
+      //     console.log(error)
+      //     this.setState({
+      //       mssg:"Seems like there aren't any published ideas yet :/",
+      //       loading:false
+      //     })
+      //   }
+      // })
     }else{
       fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset='+(page-1), {
         method:'GET'
@@ -200,11 +299,13 @@ class Ideas extends Component{
     }
 
   }
+
     render(){
       const {loading} = this.state
       var {cards} = this.state;
       let ideaz = cards.length>0?(cards.map((data, index)=>{
         //  console.log(index)
+
         let theDate = data.date_time.substring(0,10);
         let desc
         if(data.project_description.length>=250){
@@ -218,7 +319,7 @@ class Ideas extends Component{
           if(tag){
             return(<Tag color="blue" key={tag}>{tag}</Tag>)
           }else{
-            return (<span></span>)
+            return ('')
           }
         })
         return(
@@ -230,7 +331,11 @@ class Ideas extends Component{
               <CaretDownFilled style={{color:'#2785FC'}} onClick={()=>{this.addVote(-1, data.id, index)}} />
             </Col>
             <Col span={22} className='card-cont'>
-            <div><span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span><span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span></div>
+              <div>
+                <span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span>
+                <span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span>
+                {data.is_completed && <Tag color='green' style={{marginLeft:'10px'}}>Made Real</Tag>}
+              </div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{desc}</p></div>
               <div>{tags}</div>
@@ -245,7 +350,23 @@ class Ideas extends Component{
         <Nav active='ideas'/>
         <div className="main">
           <div className="countryCss">
-            <Input placeholder="Search for ideas" onChange={this.onChange}/>
+            <Input className="search-by-text" placeholder="Search for ideas" onChange={(e)=>{this.onChange(e.target.value)}}/>
+            <Input className="search-by-tag" placeholder="Search by tag" onChange={this.onChangeTag}/>
+          </div>
+          <div className="countryCss filterCss" style={{marginTop:'20px'}}>
+            <div>
+              <span>Show ideas from: </span>
+              <DatePicker onChange={this.handleDate} />
+            </div>
+            <div>
+              <span>Sort by: </span>
+              <Select defaultValue="Most Votes" style={{ width: 120 }} onChange={this.handleFilter}>
+                <Option value="desc">Most votes</Option>
+                <Option value="new">Latest</Option>
+                <Option value="old">Oldest</Option>
+              </Select>
+              
+            </div>
           </div>
           <div className="IdeaCards">
           {loading && <Load2 />}

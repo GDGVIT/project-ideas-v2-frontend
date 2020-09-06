@@ -6,7 +6,7 @@ import homecar from './assets/home-car.svg'
 import hometop from './assets/home-top.svg'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
 import Addidea from './addIdea'
-
+import {Tag} from 'antd'
 
 class Home extends Component{
     constructor(props) {
@@ -15,8 +15,35 @@ class Home extends Component{
           isLoggedIn: false,
           trending: [],
           mssg:'',
-          visible:false
+          visible:false,
+          real:[],
+          realMssg:''
         }
+    }
+
+    getRealIdeas = () => {
+      
+      fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?is_made_real=True', {
+        method:'GET'
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        console.log(data)
+        if(data.message.length) {
+          this.setState({
+            real:data.message,
+          })
+        }
+
+      })
+      .catch(error=>{
+        if(error){
+          console.log(error)
+          this.setState({
+            realMssg:"so empty D:",
+          })
+        }
+      })
     }
 
     componentDidMount() {
@@ -37,6 +64,8 @@ class Home extends Component{
           })
         }
       })
+
+      this.getRealIdeas()
     }
     
     openSidea=(id)=>{
@@ -54,7 +83,7 @@ class Home extends Component{
 }
 
     render(){
-      const {trending, mssg}=this.state
+      const {trending, mssg, real, realMssg}=this.state
       var dataDisp = trending.length?(
         trending.map(data=>{
           let desc=''
@@ -76,6 +105,31 @@ class Home extends Component{
           )
         })
       ):(<div style={{textAlign:"center"}}>{mssg}</div>)
+
+
+        var realDisp = real.length?(
+          real.map(data=> {
+            let desc = ''
+            if(data.project_description.length>=170){
+              desc = data.project_description.substring(0,170)+'...'
+            }else{
+              desc = data.project_description;
+            }
+            return(
+              <Card data-aos="fade-right" key={data.id} onClick={()=>{this.openSidea(data.id)}}>
+              <h3>
+                {data.project_title}
+              </h3>
+              <Tag color="green">Made real</Tag>
+              <p className="idea-desc">{desc}</p>
+              <p style={{color:"#2785FC", marginTop:'20px'}}>
+                {data.votes} Votes
+              </p>
+            </Card>
+            )
+          })
+        ):(<div style={{textAlign:"center"}}>{realMssg}</div>)
+
       return(
       <div>
       <BackTop />
@@ -89,7 +143,7 @@ class Home extends Component{
           <div className="homeHeading">
 
             <h1>DSC Idea Hub</h1>
-            <p>DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/> "Everything Begins With An Idea." – Earl Nightengale</p>
+            <p>DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/>"Everything Begins With An Idea" – Earl Nightingale</p>
             <AnchorLink offset='100' className='ant-btn ant-btn-primary' href="#procedure">Learn More</AnchorLink>
           </div>
 
@@ -134,49 +188,21 @@ class Home extends Component{
               <p>A plethora of ideas were submitted in the past and we managed to convert them to successful projects which had the potential to help a lot of people around the globe.</p>
             </div>
           <div className="trending-cards imr-cards">
-              <Card data-aos="fade-left" key={1}>
-                <h3>
-                  Event's App
-                </h3>
-                <p>Ever missed out on important event dates that you wished to participate in but forgot to do so? Bother no more as we bring to you ‘Events’, an app that not only notifies you about the latest upcoming activities and events but also enables you to add important dates straight to your Google calendar!</p>
-                <p style={{color:"#2785FC", marginTop:'20px'}}>
-                The app is now available on PlayStore as well! Try it out now!
-                </p>
-              </Card>
-              <Card data-aos="fade-left" key={2}>
-                <h3>
-                  Easy Gists
-                </h3>
-                <p>Easy Gists allows you to Create, Update, Delete, and View all your GitHub Gists straight from your phone. It features a Code View which allows you to view the code with syntax highlighting in a formatted way. The gists will be available offline for easy access during low or no internet connection.</p>
-                <p style={{color:"#2785FC", marginTop:'20px'}}>
-                <a href="http://bit.ly/DSCGistsApp" target='_blank' rel='noopener noreferrer'>Check it out here</a>
-                </p>
-              </Card>
-              <Card data-aos="fade-left" key={3}>
-                <h3>
-                  Handwriting Parser
-                </h3>
-                <p>How often have you spent all your time and effort in typing out an assignment only to find out later that it was supposed to be hand-written? Answering all your prayers, we present to you Handwriter, an easy to use app that lets you convert any typed text directly to a hand-written document at the press of a button.
-
-Visit the link to test it out! 
-</p>
-                <p style={{color:"#2785FC", marginTop:'20px'}}>
-                  <a href="https://handwriter.dscvit.com/" target='_blank' rel='noopener noreferrer'>Check it out here</a>
-                </p>
-              </Card>
+            {realDisp}
           </div>
           </div>
 
         </div>
         <Drawer
-                        placement="right"
-                        closable={true}
-                        onClose={this.onClose}
-                        visible={this.state.visible}
-                        width={window.innerWidth<400?(window.innerWidth):(400)}
-                        zIndex="1001"
-                    >
-                        <Addidea />
+            placement="right"
+            closable={true}
+            onClose={this.onClose}
+            visible={this.state.visible}
+            width={window.innerWidth<400?(window.innerWidth):(400)}
+            zIndex="1001"
+            destroyOnClose={true}
+        >
+            <Addidea />
         </Drawer>
       </div>
       )

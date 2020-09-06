@@ -257,7 +257,7 @@ changePage=(page)=>{
         if(tag){
           return(<Tag color="blue" key={tag}>{tag}</Tag>)
         }else{
-          return(<span></span>)
+          return("")
         }
       })
       return(

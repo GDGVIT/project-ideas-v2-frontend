@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import {Menu, Drawer, message} from 'antd'
 import {NavLink, withRouter} from 'react-router-dom'
-import dsc from './assets/dsclogo.png';
 import Addidea from './addIdea';
 import Load from './loader'
 import firebase from "firebase/app";
 import 'firebase/auth';
 import { ReCaptcha } from 'react-recaptcha-v3';
-import glogo from './assets/glogo.png'
 import Profile from './profile';
+import glogo from './assets/glogo.png';
+import dsc from './assets/angleDSC.png';
 
 
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -218,9 +218,9 @@ class Nav extends Component{
            
             <div>
             <ReCaptcha
-            sitekey="6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz"
-            action='/'
-            verifyCallback={this.verifyCallback}
+                sitekey="6Lcwf-UUAAAAAOQBtsfwGEjG4Y6iEkmQqbDy1uAz"
+                action='/'
+                verifyCallback={this.verifyCallback}
             />
             {loading && <Load />}
                 <Menu onClick={this.handleClick} selectedKeys={this.state.current} mode="horizontal">
@@ -256,6 +256,7 @@ class Nav extends Component{
                         width={window.innerWidth<400?(window.innerWidth):(400)}
                         zIndex="1001"
                         title="Profile"
+                        destroyOnClose={true}
                     >
                         <Profile closeThis={this.onClose} setlogin={this.setlogin} />
                 </Drawer>
