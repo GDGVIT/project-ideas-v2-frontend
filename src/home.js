@@ -143,7 +143,12 @@ class Home extends Component{
           <div className="homeHeading">
 
             <h1>DSC Idea Hub</h1>
+<<<<<<< HEAD
             <p>DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/>"Everything Begins With An Idea" – Earl Nightingale</p>
+=======
+            <p>~"DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/>Everything Begins With An Idea." – Earl Nightingale</p>
+
+>>>>>>> 1ba4da6ea185955aa1283569cd271cb7d08d5649
             <AnchorLink offset='100' className='ant-btn ant-btn-primary' href="#procedure">Learn More</AnchorLink>
           </div>
 
@@ -182,7 +187,7 @@ class Home extends Component{
           </div>
           <div className="home-trending" style={{marginBottom:'50px', marginTop:'50px'}}>
             <h2 style={{color:'#2785FC', fontWeight:'bold', marginBottom:'40px'}}  data-aos='fade-up'>
-              Ideas made real
+              Ideas Made Real
             </h2>
             <div className="homecar-desc"  data-aos='fade-up'> 
               <p>A plethora of ideas were submitted in the past and we managed to convert them to successful projects which had the potential to help a lot of people around the globe.</p>

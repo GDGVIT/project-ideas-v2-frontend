@@ -9,7 +9,7 @@ const Addidea = (props) =>{
 
     const [loading, setLoad] = useState(false)
     const [al, setAl] = useState(true)
-    const [tagz, setTags] = useState(["Sample"])
+    const [tagz, setTags] = useState([])
     const [val, setVal] = useState('')
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
