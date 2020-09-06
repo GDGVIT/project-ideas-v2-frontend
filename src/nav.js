@@ -8,7 +8,7 @@ import 'firebase/auth';
 import { ReCaptcha } from 'react-recaptcha-v3';
 import Profile from './profile';
 import glogo from './assets/glogo.png';
-import dsc from './assets/dsclogo.png';
+import dsc from './assets/angleDSC.png';
 
 
 var provider = new firebase.auth.GoogleAuthProvider();
@@ -256,6 +256,7 @@ class Nav extends Component{
                         width={window.innerWidth<400?(window.innerWidth):(400)}
                         zIndex="1001"
                         title="Profile"
+                        destroyOnClose={true}
                     >
                         <Profile closeThis={this.onClose} setlogin={this.setlogin} />
                 </Drawer>

@@ -23,7 +23,7 @@ class Home extends Component{
 
     getRealIdeas = () => {
       
-      fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?is_made_real=True', {
+      fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?is_made_real=True', {
         method:'GET'
       })
       .then(res=>res.json())
@@ -40,7 +40,7 @@ class Home extends Component{
         if(error){
           console.log(error)
           this.setState({
-            realMssg:"However unlikely, none of the ideas have beem made real as of yet",
+            realMssg:"so empty D:",
           })
         }
       })
@@ -143,7 +143,7 @@ class Home extends Component{
           <div className="homeHeading">
 
             <h1>DSC Idea Hub</h1>
-            <p>~"DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/>Everything Begins With An Idea." – Earl Nightingale</p>
+            <p>DSC VIT is all about working constructively to find solutions to real-life problems faced by communities. We would love to receive unique ideas from you. The best ones may be nominated as team projects! <br/><br/>"Everything Begins With An Idea" – Earl Nightingale</p>
             <AnchorLink offset='100' className='ant-btn ant-btn-primary' href="#procedure">Learn More</AnchorLink>
           </div>
 
@@ -194,14 +194,15 @@ class Home extends Component{
 
         </div>
         <Drawer
-                        placement="right"
-                        closable={true}
-                        onClose={this.onClose}
-                        visible={this.state.visible}
-                        width={window.innerWidth<400?(window.innerWidth):(400)}
-                        zIndex="1001"
-                    >
-                        <Addidea />
+            placement="right"
+            closable={true}
+            onClose={this.onClose}
+            visible={this.state.visible}
+            width={window.innerWidth<400?(window.innerWidth):(400)}
+            zIndex="1001"
+            destroyOnClose={true}
+        >
+            <Addidea />
         </Drawer>
       </div>
       )

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import {withAlert} from 'react-alert'
 import Nav from './nav'
-import { Card, Row, Col, Input, Pagination, Tag , Select, DatePicker} from 'antd'
+import { Card, Row, Col, Input, Pagination, Tag , Select, DatePicker, message} from 'antd'
 import {CaretDownFilled, CaretUpFilled, MessageOutlined} from '@ant-design/icons'
 import Load2 from './loading2'
 
 
 const { Option } = Select;
+var alertFlag = true;
 
 class Ideas extends Component{
     constructor(props) {
@@ -72,24 +73,39 @@ class Ideas extends Component{
       }
     }
 
-    console.log(url)
-
-    fetch(url+'&offset=0',{
+    if(url !== process.env.REACT_APP_BASEURL+'app/search_published_ideas/'){
+      fetch(url+'&offset=0',{
         method:'GET'
       })
       .then(res=>res.json())
       .then(data=>{
-        if(!data){
-          this.props.alert.show("Couldn't find any such Idea")
-        }else{
+        console.log(data)
+        if(data){
           this.setState({
             cards:data.message,
             total: data.total_pages
-          
           })
         }
       })
-      .catch(error=>console.error(error))
+      .catch(error=>{
+        if(error) {
+          if(alertFlag){
+            message.error("No such ideas found",3)
+            alertFlag = false
+            setTimeout(()=>{
+              alertFlag = true
+            }, 3000)
+          }
+          this.setState({
+            cards:[],
+            total:0 
+          })
+        }
+      })
+    }else {
+      this.getIdeas()
+    }
+      
   }
 
 
@@ -119,20 +135,7 @@ class Ideas extends Component{
       }, ()=>{this.onChange(this.state.search)})
     }
 
-  componentDidMount() {
-    // console.log(document.querySelector('.main').offsetHeight)
-    // console.log(window.innerHeight)
-    this.setState({
-      loading:true
-    })
-
-    if(sessionStorage.getItem('lastActivePage')){
-      this.setState({
-        def:parseInt(sessionStorage.getItem('lastActivePage')),
-        pagKey:this.state.pagKey+1
-      })
-      this.changePage(parseInt(sessionStorage.getItem('lastActivePage')))
-    }else{
+    getIdeas = () => {
       fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset=0', {
         method:'GET'
       })
@@ -153,6 +156,23 @@ class Ideas extends Component{
           })
         }
       })
+    }
+
+  componentDidMount() {
+    // console.log(document.querySelector('.main').offsetHeight)
+    // console.log(window.innerHeight)
+    this.setState({
+      loading:true
+    })
+
+    if(sessionStorage.getItem('lastActivePage')){
+      this.setState({
+        def:parseInt(sessionStorage.getItem('lastActivePage')),
+        pagKey:this.state.pagKey+1
+      })
+      this.changePage(parseInt(sessionStorage.getItem('lastActivePage')))
+    }else{
+      this.getIdeas()
     }
     
   }
@@ -304,7 +324,7 @@ class Ideas extends Component{
               <div>
                 <span style={{padding:'0px 20px 15px 0px', fontWeight:'bold'}}>{data.username} </span>
                 <span style={{paddingBottom:'15px', color:'gray'}}>{theDate}</span>
-                {data.is_completed && <Tag color='green'>Completed</Tag>}
+                {data.is_completed && <Tag color='green' style={{marginLeft:'10px'}}>Made Real</Tag>}
               </div>
               <div><h2>{data.project_title}</h2></div>
               <div><p>{desc}</p></div>

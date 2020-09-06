@@ -72,7 +72,14 @@ const Addidea = (props) =>{
                 if(res.status === 200){
                     setLoad(false)
                     props.alert.show("Idea submitted")
-                    props.closeThis()
+                    setVal('')
+                    setTags([])
+                    setTitle('')
+                    setDesc('')
+                    setTimeout(()=>{
+                        props.closeThis()
+                    }, 100)
+                    
                 }else if(res.status===403){
                     setLoad(false)
                         if(al){
@@ -83,13 +90,15 @@ const Addidea = (props) =>{
                             },5000)
                             }
                 }    
-                return(res.json())
+                return res.json()
             })
             .then(data=>{
-                // console.log(data)
+                console.log(data)
             })
             .catch(error=>{
-                props.alert.show('something went wrong')
+                if(error) {
+                    props.alert.show('something went wrong')
+                }
                 setLoad(false)
             })
         }
@@ -118,7 +127,7 @@ const Addidea = (props) =>{
                         {max: 100, message:'max 100 characters only!'}
 
                     ]}>
-                    <Input placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{setTitle(v.target.value.trim())}}/>
+                    <Input  value={title} placeholder='Describe your idea in a short and concise manner.' onChange={(v)=>{setTitle(v.target.value.trim())}}/>
                 </Form.Item>
                 <h2>Description</h2>
                 <Form.Item name='project_description' 
@@ -127,7 +136,7 @@ const Addidea = (props) =>{
                     {max: 500, message:'max 500 characters only!'}
                     ]}
                 >
-                    <Input.TextArea rows={4} onChange={(v)=>{setDesc(v.target.value.trim())}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
+                    <Input.TextArea value={desc} rows={4} onChange={(v)=>{setDesc(v.target.value.trim())}} placeholder='Give details about your idea, write about what you want to implement, cover all the details.'/>
                 </Form.Item>
                 <h2>Tags</h2>
                 <Form.Item name='tags' 
