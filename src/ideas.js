@@ -30,10 +30,16 @@ class Ideas extends Component{
     }
 
     // SELECT CSS
-  onChange=(e)=>{
+  onChange=(e, p)=>{
     this.setState({
       search: e
     })
+
+    var page = 0
+
+    if(p){
+      page = p-1
+    }
 
     let url = process.env.REACT_APP_BASEURL+'app/search_published_ideas/'
     let flag = 0
@@ -74,7 +80,7 @@ class Ideas extends Component{
     }
 
     if(url !== process.env.REACT_APP_BASEURL+'app/search_published_ideas/'){
-      fetch(url+'&offset=0',{
+      fetch(url+'&offset='+page,{
         method:'GET'
       })
       .then(res=>res.json())
@@ -105,7 +111,9 @@ class Ideas extends Component{
     }else {
       this.getIdeas()
     }
-      
+    this.setState({
+      loading:false
+    })
   }
 
 
@@ -238,31 +246,33 @@ class Ideas extends Component{
     this.setState({
       loading:true
     })
-    if(this.state.search){
-      fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+this.state.search+'&offset='+(page-1),{
-        method:'GET'
-      })
-      .then(res=>res.json())
-      .then(data=>{
-        if(!data){
-          this.props.alert.show("Couldn't find any such Idea")
-        }else{
-          this.setState({
-            cards:data.message,
-            total: data.total_pages,
-              loading:false
-          })
-        }
-      })
-      .catch(error=>{
-        if(error){
-          console.log(error)
-          this.setState({
-            mssg:"Seems like there aren't any published ideas yet :/",
-            loading:false
-          })
-        }
-      })
+    if(this.state.search || this.state.filter || this.state.tag || this.state.date){
+
+      this.onChange(this.state.search, page)
+      // fetch(process.env.REACT_APP_BASEURL+'app/search_published_ideas/?text='+this.state.search+'&offset='+(page-1),{
+      //   method:'GET'
+      // })
+      // .then(res=>res.json())
+      // .then(data=>{
+      //   if(!data){
+      //     this.props.alert.show("Couldn't find any such Idea")
+      //   }else{
+      //     this.setState({
+      //       cards:data.message,
+      //       total: data.total_pages,
+      //         loading:false
+      //     })
+      //   }
+      // })
+      // .catch(error=>{
+      //   if(error){
+      //     console.log(error)
+      //     this.setState({
+      //       mssg:"Seems like there aren't any published ideas yet :/",
+      //       loading:false
+      //     })
+      //   }
+      // })
     }else{
       fetch(process.env.REACT_APP_BASEURL+'app/published_ideas/?offset='+(page-1), {
         method:'GET'
@@ -355,6 +365,7 @@ class Ideas extends Component{
                 <Option value="new">Latest</Option>
                 <Option value="old">Oldest</Option>
               </Select>
+              
             </div>
           </div>
           <div className="IdeaCards">
